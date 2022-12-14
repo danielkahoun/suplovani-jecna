@@ -1,0 +1,16 @@
+{
+  "name": "suplovani-jecna-backend",
+  "version": "1.0.0",
+  "description": "Suplovani Jecna - Node.js backend",
+  "author": "Daniel Kahoun <kahoun@spsejecna.cz>",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.16.1",
+    "express-session": "^1.17.3",
+    "mysql": "^2.18.1"
+  }
+}

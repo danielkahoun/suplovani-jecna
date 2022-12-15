@@ -1,3 +1,9 @@
+<script>
+export default {
+  props: ['user']
+}
+</script>
+
 <template>
     <header>
     <div class="px-3 text-bg-dark">
@@ -56,12 +62,17 @@
       <div class="container d-flex flex-wrap justify-content-center">
         <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto">
           <h6 class="d-flex align-items-center p-0 m-0">Suplování SPŠE Ječná</h6>
-          <p class="p-0 m-0">verze 1.2</p>
+          <p class="p-0 m-0" v-if="user.role == 2">verze pro tvořitele suplování</p>
+          <p class="p-0 m-0" v-if="user.role == 1">verze pro učitele</p>
+          <p class="p-0 m-0" v-else>verze pro studenta</p>
         </form>
 
-        <div class="text-end btn-group">
-          <button type="button" class="btn btn-light text-dark">Sdílet</button>
-          <button type="button" class="btn btn-primary">Přidat do Google Kalendáře</button>
+        <div class="d-flex align-items-center" style="gap:10px;">
+          <img class="rounded-circle" :src="'https://ui-avatars.com/api/?name='+user.first_name.substring(0, 1)+'+'+user.last_name.substring(0, 1)+'&background=random'" width="43" height="43">
+          <div class="d-block text-start">
+            <p class="p-0 m-0">přihlášen jako</p>
+            <h6 class="p-0 m-0">{{user.first_name}} {{user.last_name}}</h6>
+          </div>
         </div>
       </div>
     </div>

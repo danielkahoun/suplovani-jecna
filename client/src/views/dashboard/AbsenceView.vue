@@ -2,27 +2,10 @@
 import NavbarComponent from '../../components/NavbarComponent.vue';
 
 export default {
+    props: ['user'],
     data() {
         return {
-            user: {
-                username: null,
-                role: null
-            }
         };
-    },
-    mounted() {
-        (async () => {
-            const vm = this;
-            fetch("http://localhost:8080/api/getProfile", {
-                method: "GET",
-            })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (data) {
-                    vm.user = data.user;
-                });
-        })();
     },
     components: { NavbarComponent }
 }
@@ -30,7 +13,7 @@ export default {
 
 <template>
 
-    <NavbarComponent />
+    <NavbarComponent :user="user" />
 
     <div class="container">
         <h3>Absence učitelů</h3>

@@ -2,26 +2,24 @@
 import NavbarComponent from '../../components/NavbarComponent.vue';
 
 export default {
+    props: ['user'],
     data() {
         return {
-            user: {
-                username: null,
-                role: null
-            }
-        };
+            users: []
+        }
     },
     mounted() {
         (async () => {
             const vm = this;
-            fetch("http://localhost:8080/api/getProfile", {
+            fetch("http://localhost:8080/api/getUsers/"+vm.$cookies.get("token"), {
                 method: "GET",
             })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (data) {
-                    vm.user = data.user;
-                });
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                vm.users = data;
+            });
         })();
     },
     components: { NavbarComponent }
@@ -30,7 +28,7 @@ export default {
 
 <template>
 
-    <NavbarComponent />
+    <NavbarComponent :user="user" />
 
     <div class="container">
         <h3>Správa uživatelů</h3>
@@ -41,36 +39,39 @@ export default {
 
 
 
-        <table class="table table-striped table-hover table-bordered">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-</table>
+        <table class="table table-hover table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Uživatelské jméno</th>
+                    <th scope="col">Jméno</th>
+                    <th scope="col">Příjmení</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Datum vytvoření</th>
+                    <th scope="col">Akce</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="user in users">
+                    <th scope="row">{{user.id}}</th>
+                    <td>{{user.username}}</td>
+                    <td>{{user.first_name}}</td>
+                    <td>{{user.last_name}}</td>
+                    <td>
+                        <span v-if="user.role == 2">tvořitel suplování</span>
+                        <span v-if="user.role == 1">učitel</span>
+                        <span v-else>student</span>
+                    </td>
+                    <td>{{new Date(user.creation_date).toLocaleDateString("cs-CZ")}}</td>
+                    <td>
+                        <div class="d-flex" style="margin:0 15px; gap:20px;">
+                            <a class="text-decoration-none" href="#"><i class="fa-sharp fa-solid fa-user-pen"></i>&nbsp;Upravit</a>
+                            <a class="text-decoration-none" href="#"><i class="fa-sharp fa-solid fa-user-xmark"></i>&nbsp;Smazat</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
 
 
@@ -78,3 +79,10 @@ export default {
     </div>
 
 </template>
+
+<style>
+tr td:last-child {
+    width: 1%;
+    white-space: nowrap;
+}
+</style>

@@ -68,8 +68,29 @@ app.get('/api/getProfile/:token', function(req, res) {
             res.end(JSON.stringify({ "user": { "username": result[0].username, "first_name": result[0].first_name, "last_name": result[0].last_name, "role": result[0].role }}));
         }
     });
-
 });
+
+app.get('/api/getUsers/:token', function(req, res) {
+    res.writeHead(200, { "Content-type": "application/json" });
+
+    // check for permissions
+
+    con.query("SELECT id,username,first_name,last_name,role,creation_date FROM users", function (err, result) {
+        if (err) throw err;
+
+        console.log(result);
+        res.end(JSON.stringify(result));
+    });
+});
+
+/*app.get('/api/deleteUser/:id', function(req, res) {
+    con.query("SELECT id,username,first_name,last_name,role,creation_date FROM users", function (err, result) {
+        if (err) throw err;
+
+        console.log(result);
+        res.end(JSON.stringify(result));
+    });
+});*/
 
 
 
@@ -86,8 +107,6 @@ app.post('/login', function(req, res) {
             res.status(403).end();
         }
     });
-
-
     
 });
 

@@ -26,15 +26,7 @@ export default {
               <router-link to="/rozvrh" class="nav-link text-white">
                 <div class="py-2">
                   <i class="fa-sharp fa-solid fa-calendar-days fa-lg bi d-block mx-auto mb-1"></i>
-                  Rozvrh
-                </div>
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/absence" class="nav-link text-white">
-                <div class="py-2">
-                  <i class="fa-sharp fa-solid fa-person-circle-question fa-lg bi d-block mx-auto mb-1"></i>
-                  Absence
+                  Suplování
                 </div>
               </router-link>
             </li>
@@ -62,9 +54,9 @@ export default {
       <div class="container d-flex flex-wrap justify-content-center">
         <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto">
           <h6 class="d-flex align-items-center p-0 m-0">Suplování SPŠE Ječná</h6>
-          <p class="p-0 m-0" v-if="user.role == 2">verze pro tvořitele suplování</p>
-          <p class="p-0 m-0" v-if="user.role == 1">verze pro učitele</p>
-          <p class="p-0 m-0" v-else>verze pro studenta</p>
+          <p class="p-0 m-0" v-if="user.role == 2">přehled pro tvořitele suplování</p>
+          <p class="p-0 m-0" v-if="user.role == 1">přehled pro učitele</p>
+          <p class="p-0 m-0" v-else>přehled pro studenta</p>
         </form>
 
         <div class="d-flex align-items-center" style="gap:10px;">

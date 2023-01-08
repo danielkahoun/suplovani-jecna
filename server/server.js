@@ -57,6 +57,16 @@ function regenerateToken(username) {
     return token;
 }
 
+function getUserDetails(token, callback) {
+    con.query("SELECT * FROM users WHERE token = "+mysql.escape(token), function(err, result) {
+        if (err) {
+            callback(err, null);
+        }else {
+            callback(null, result[0]);
+        }
+    });
+}
+
 app.get('/api/getProfile/:token', function(req, res) {
     res.writeHead(200, { "Content-type": "application/json" });
 
@@ -76,6 +86,58 @@ app.get('/api/getUsers/:token', function(req, res) {
     // check for permissions
 
     con.query("SELECT id,username,first_name,last_name,role,creation_date FROM users", function (err, result) {
+        if (err) throw err;
+
+        console.log(result);
+        res.end(JSON.stringify(result));
+    });
+});
+
+app.get('/api/getSchedule/:token', function(req, res) {
+    res.writeHead(200, { "Content-type": "application/json" });
+    
+    getUserDetails(req.params.token, function(err, data) {
+        if (err) {
+            console.log("ERROR : ",err);            
+        }else {            
+            console.log("result from db is : ", data);
+            
+            let query = "";
+            if(data.role == 2) {
+                query = "SELECT * FROM lessons WHERE day = " + mysql.escape(new Date().getDay() + " ORDER BY day, hour ASC");
+            }else if(data.role == 1) {
+                query = "SELECT * FROM lessons WHERE teacher_id = " + mysql.escape(data.id) + " ORDER BY day, hour ASC";
+            }else {
+                query = "SELECT * FROM lessons WHERE class_id = " + mysql.escape(data.class_id) + " ORDER BY day, hour ASC";
+            }
+        
+            con.query(query, function (err, result) {
+                if (err) throw err;
+
+                const groupedData = result.reduce((aggObj, child) => {
+                    if (aggObj.hasOwnProperty(child.day)){
+                      aggObj[child.day].push(child);
+                    } else {
+                      aggObj[child.day] = [child];
+                    }    
+                    return aggObj
+                }, {})
+
+                res.end(JSON.stringify(groupedData));
+            });
+
+        }
+    });
+
+    
+});
+
+app.get('/api/getTeachers/:token', function(req, res) {
+    res.writeHead(200, { "Content-type": "application/json" });
+
+    // check for permissions
+
+    con.query("SELECT id,username,first_name,last_name,role,creation_date FROM users WHERE role='1'", function (err, result) {
         if (err) throw err;
 
         console.log(result);

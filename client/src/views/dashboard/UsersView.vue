@@ -59,13 +59,12 @@ export default {
                     <td>{{user.last_name}}</td>
                     <td>
                         <span v-if="user.role == 2">tvořitel suplování</span>
-                        <span v-if="user.role == 1">učitel</span>
+                        <span v-else-if="user.role == 1">učitel</span>
                         <span v-else>student</span>
                     </td>
                     <td>{{new Date(user.creation_date).toLocaleDateString("cs-CZ")}}</td>
                     <td>
                         <div class="d-flex" style="margin:0 15px; gap:20px;">
-                            <a class="text-decoration-none" href="#"><i class="fa-sharp fa-solid fa-user-pen"></i>&nbsp;Upravit</a>
                             <a class="text-decoration-none" href="#"><i class="fa-sharp fa-solid fa-user-xmark"></i>&nbsp;Smazat</a>
                         </div>
                     </td>

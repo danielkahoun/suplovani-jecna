@@ -14,6 +14,7 @@ export default {
     <div class="container">
         <h3>Rozvrh</h3>
         <hr>
+        <p>Tady zatím nic nebude</p>
     </div>
 
 </template>

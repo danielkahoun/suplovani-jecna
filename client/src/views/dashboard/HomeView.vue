@@ -3,6 +3,25 @@ import NavbarComponent from '../../components/NavbarComponent.vue';
 
 export default {
     props: ['user'],
+    data() {
+        return {
+            schedule: []
+        }
+    },
+    mounted() {
+        (async () => {
+            const vm = this;
+            fetch("http://localhost:8080/api/getSchedule/"+vm.$cookies.get("token"), {
+                method: "GET",
+            })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                vm.schedule = data;
+            });
+        })();
+    },
     components: { NavbarComponent }
 }
 </script>
@@ -31,52 +50,19 @@ export default {
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>pondělí<br><b>01.11.2022</b></td>
-                    <td class="bg-success text-white text-center">
-                        <span><b>PSS</b>&nbsp;Ms</span><br>
-                        <span>odpadá</span>
+                <tr v-for="(value, key) in schedule">
+                    <td v-if="key == 1">pondělí<br><b><!--01.11.2022--></b></td>
+                    <td v-else-if="key == 2">úterý<br><b><!--01.11.2022--></b></td>
+                    <td v-else-if="key == 3">středa<br><b><!--01.11.2022--></b></td>
+                    <td v-else-if="key == 4">čtvrtek<br><b><!--01.11.2022--></b></td>
+                    <td v-else-if="key == 5">pátek<br><b><!--01.11.2022--></b></td>
+                    <td v-else-if="key == 6">sobota<br><b><!--01.11.2022--></b></td>
+                    <td v-else-if="key == 7">neděle<br><b><!--01.11.2022--></b></td>
+                    <td v-for="i in value[0].hour-1"></td>
+                    <td v-for="record in value">
+                        <span><b>{{ record.abbr }}</b>{{ record.hour }}</span>
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>úterý<br><b>02.11.2022</b></td>
-                    <td></td>
-                    <td></td>
-                    <td class="bg-warning text-white text-center">
-                        <span><b>M</b>&nbsp;Ng</span><br>
-                        <span>přesun</span>
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>středa<br><b>03.11.2022</b></td>
-                    <td></td>
-                    <td colspan="2" class="bg-primary text-white text-center">
-                        <span><b>Můžeš podnikat</b></span><br>
-                        <span>seminář</span>
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td v-for="i in (10-value.length-value[0].hour+1)"></td>
                 </tr>
             </tbody>
         </table>

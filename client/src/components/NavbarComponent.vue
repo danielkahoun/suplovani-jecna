@@ -23,14 +23,6 @@ export default {
               </router-link>
             </li>
             <li>
-              <router-link to="/rozvrh" class="nav-link text-white">
-                <div class="py-2">
-                  <i class="fa-sharp fa-solid fa-calendar-days fa-lg bi d-block mx-auto mb-1"></i>
-                  Suplování
-                </div>
-              </router-link>
-            </li>
-            <li>
               <router-link to="/uzivatele" class="nav-link text-white">
                 <div class="py-2">
                   <i class="fa-sharp fa-solid fa-users fa-lg bi d-block mx-auto mb-1"></i>
@@ -56,7 +48,7 @@ export default {
           <h6 class="d-flex align-items-center p-0 m-0">Suplování SPŠE Ječná</h6>
           <p class="p-0 m-0" v-if="user.role == 2">přehled pro tvořitele suplování</p>
           <p class="p-0 m-0" v-if="user.role == 1">přehled pro učitele</p>
-          <p class="p-0 m-0" v-else>přehled pro studenta</p>
+          <p class="p-0 m-0" v-if="user.role == 0">přehled pro studenta</p>
         </form>
 
         <div class="d-flex align-items-center" style="gap:10px;">

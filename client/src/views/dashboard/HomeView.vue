@@ -32,7 +32,21 @@ export default {
 
     <div class="container">
 
-        <h3>Přehled pro uživatele {{ user.username }}</h3>
+        <h3>Přehled</h3>
+        <hr>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Předchozí den</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">05.02.</a></li>
+                <li class="page-item"><a class="page-link" href="#">06.02.</a></li>
+                <li class="page-item"><a class="page-link" href="#">07.02</a></li>
+                <li class="page-item">
+                <a class="page-link" href="#">Další den</a>
+                </li>
+            </ul>
+        </nav>
         <table class="table table-bordered bg-white">
             <thead class="text-center">
                 <tr>
@@ -49,20 +63,35 @@ export default {
                     <td>10. hodina<br><b>15:50 - 16:35</b></td>
                 </tr>
             </thead>
-            <tbody>
+            <tbody v-if="user.role != 2">
                 <tr v-for="(value, key) in schedule">
                     <td v-if="key == 1">pondělí<br><b><!--01.11.2022--></b></td>
                     <td v-else-if="key == 2">úterý<br><b><!--01.11.2022--></b></td>
                     <td v-else-if="key == 3">středa<br><b><!--01.11.2022--></b></td>
                     <td v-else-if="key == 4">čtvrtek<br><b><!--01.11.2022--></b></td>
-                    <td v-else-if="key == 5">pátek<br><b><!--01.11.2022--></b></td>
-                    <td v-else-if="key == 6">sobota<br><b><!--01.11.2022--></b></td>
-                    <td v-else-if="key == 7">neděle<br><b><!--01.11.2022--></b></td>
-                    <td v-for="i in value[0].hour-1"></td>
-                    <td v-for="record in value">
-                        <span><b>{{ record.abbr }}</b>{{ record.hour }}</span>
+                    <td v-else-if="key == 5">pátek<br><b><!--01.11.2022--></b></td>                    
+                    <td v-for="i in 10">
+                        <template v-for="x in 10">
+                            <span v-if="value[x-1] != null && value[x-1].hour == i">
+                                <div class="row">
+                                    <div class="col text-start">{{ value[x-1].last_name.slice(0, 2) }}</div>
+                                    <div class="col text-end">{{ value[x-1].classroom }}</div>
+                                </div>
+                                <div class="text-center">
+                                    <h5>{{ value[x-1].abbr }}</h5>
+                                </div>
+                                <div class="row">
+                                    <div class="col text-start">{{ value[x-1].class }}</div>
+                                    <div class="col text-end"></div>
+                                </div>
+                            </span>
+                        </template>
                     </td>
-                    <td v-for="i in (10-value.length-value[0].hour+1)"></td>
+                </tr>
+            </tbody>
+            <tbody v-else>
+                <tr>
+                    <td colspan="11">Tvořitel nemá rozvrh</td>
                 </tr>
             </tbody>
         </table>

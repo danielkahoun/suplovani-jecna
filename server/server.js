@@ -99,27 +99,28 @@ app.get('/api/getSchedule/:token', function(req, res) {
     getUserDetails(req.params.token, function(err, data) {
         if (err) {
             console.log("ERROR : ",err);            
-        }else {            
+        }else {
             console.log("result from db is : ", data);
-            
+
             let query = "";
             if(data.role == 2) {
-                query = "SELECT * FROM lessons WHERE day = " + mysql.escape(new Date().getDay() + " ORDER BY day, hour ASC");
+                query = "SELECT lessons.*, classes.name AS class, users.last_name FROM lessons INNER JOIN classes ON classes.id = lessons.class_id INNER JOIN users ON users.id = lessons.teacher_id WHERE day = " + mysql.escape(new Date().getDay() + " ORDER BY day, hour ASC");
             }else if(data.role == 1) {
-                query = "SELECT * FROM lessons WHERE teacher_id = " + mysql.escape(data.id) + " ORDER BY day, hour ASC";
+                query = "SELECT lessons.*, classes.name AS class, users.last_name FROM lessons INNER JOIN classes ON classes.id = lessons.class_id INNER JOIN users ON users.id = lessons.teacher_id WHERE teacher_id = " + mysql.escape(data.id) + " ORDER BY day, hour ASC";
             }else {
-                query = "SELECT * FROM lessons WHERE class_id = " + mysql.escape(data.class_id) + " ORDER BY day, hour ASC";
+                query = "SELECT lessons.*, classes.name AS class, users.last_name FROM lessons INNER JOIN classes ON classes.id = lessons.class_id INNER JOIN users ON users.id = lessons.teacher_id WHERE lessons.class_id = " + mysql.escape(data.class_id) + " ORDER BY day, hour ASC";
             }
-        
+            console.log(query);
+
             con.query(query, function (err, result) {
                 if (err) throw err;
 
                 const groupedData = result.reduce((aggObj, child) => {
-                    if (aggObj.hasOwnProperty(child.day)){
+                    if(aggObj.hasOwnProperty(child.day)){
                       aggObj[child.day].push(child);
-                    } else {
+                    }else {
                       aggObj[child.day] = [child];
-                    }    
+                    }
                     return aggObj
                 }, {})
 
@@ -145,14 +146,36 @@ app.get('/api/getTeachers/:token', function(req, res) {
     });
 });
 
-/*app.get('/api/deleteUser/:id', function(req, res) {
-    con.query("SELECT id,username,first_name,last_name,role,creation_date FROM users", function (err, result) {
+app.get('/api/getClasses/:token', function(req, res) {
+    // check for permissions
+
+    con.query("SELECT * FROM classes", function (err, result) {
         if (err) throw err;
 
+        res.writeHead(200, { "Content-type": "application/json" });
         console.log(result);
         res.end(JSON.stringify(result));
     });
-});*/
+
+});
+
+
+app.post('/api/addUser/:token', function(req, res) {
+    let username = req.body.first_name.normalize("NFD").replace(/[\u0300-\u036f]/g, "") + req.body.last_name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    con.query("INSERT INTO users(username, password, first_name, last_name, role, class_id) VALUES ("+mysql.escape(username.toLowerCase())+","+mysql.escape(hashPassword(req.body.password))+","+mysql.escape(req.body.first_name)+","+mysql.escape(req.body.last_name)+","+mysql.escape(req.body.role)+","+mysql.escape(req.body.class_id)+")", function (err, result) {
+        if (err) throw err;
+        res.writeHead(200, { "Content-type": "application/json" });
+        res.end();
+    });
+});
+
+app.get('/api/deleteUser/:id', function(req, res) {
+    con.query("DELETE FROM users WHERE id = "+mysql.escape(req.params.id), function (err, result) {
+        if (err) throw err;
+        res.writeHead(200);
+        res.end();
+    });
+});
 
 
 

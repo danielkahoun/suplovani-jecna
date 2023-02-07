@@ -10,15 +10,19 @@ export default {
     },
     mounted() {
         (async () => {
-            const vm = this;
-            fetch("http://localhost:8080/api/getSchedule/"+vm.$cookies.get("token"), {
-                method: "GET",
+            const self = this;
+            fetch("http://localhost:8080/api/getSchedule", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': self.$cookies.get("token")
+                },
             })
             .then(function (response) {
                 return response.json();
             })
             .then(function (data) {
-                vm.schedule = data;
+                self.schedule = data;
             });
         })();
     },

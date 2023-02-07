@@ -18,47 +18,40 @@ export default {
     },
     methods: {
         getUsers() {
-            const vm = this;
-            fetch("http://localhost:8080/api/getUsers/"+vm.$cookies.get("token"), {
-                method: "GET",
+            const self = this;
+            fetch("http://localhost:8080/api/getUsers", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': self.$cookies.get("token")
+                },
             })
             .then(function (response) {
                 return response.json();
             })
             .then(function (data) {
-                vm.users = data;
+                self.users = data;
             });
         },
         getClasses() {
-            const vm = this;
-            fetch("http://localhost:8080/api/getClasses/"+vm.$cookies.get("token"), {
-                method: "GET",
+            const self = this;
+            fetch("http://localhost:8080/api/getClasses", {
+                method: 'GET',
             })
             .then(function (response) {
                 return response.json();
             })
             .then(function (data) {
-                vm.classes = data;
-            });
-        },
-        deleteUser(id) {
-            fetch("http://localhost:8080/api/deleteUser/"+id, {
-                method: "GET",
-            })
-            .then((response) => {
-                console.log(response.ok);
-                if (response.ok) {
-                    console.log("User deleted");
-                    this.users = this.users.filter(user => user.id != id);
-                }
-                
+                self.classes = data;
             });
         },
         addUser() {
-            fetch("http://localhost:8080/api/addUser/TOKEN", {
-                method: "POST",
+            const self = this;
+            fetch("http://localhost:8080/api/addUser", {
+                method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': self.$cookies.get("token")
                 },
                 body: JSON.stringify(this.form)
             })
@@ -73,6 +66,23 @@ export default {
                         class_id: "",
                     }
                     this.getUsers();
+                }
+            });
+        },
+        deleteUser(id) {
+            const self = this;
+            fetch("http://localhost:8080/api/deleteUser/"+id, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': self.$cookies.get("token")
+                },
+            })
+            .then((response) => {
+                console.log(response.ok);
+                if (response.ok) {
+                    console.log("User deleted");
+                    this.users = this.users.filter(user => user.id != id);
                 }
             });
         }

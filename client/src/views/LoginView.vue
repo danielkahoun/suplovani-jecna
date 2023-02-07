@@ -13,7 +13,7 @@ export default {
     methods: {
         login() {
             (async () => {
-                const vm = this;
+                const self = this;
                 fetch('http://localhost:8080/login', {
                     method: 'POST',
                     headers: {
@@ -35,8 +35,8 @@ export default {
                     window.location.href = '/prehled';
                 })
                 .catch(function(error) {
-                    vm.message.type = "danger";
-                    vm.message.content = error.message;
+                    self.message.type = "danger";
+                    self.message.content = error.message;
                 });
             })();
         }

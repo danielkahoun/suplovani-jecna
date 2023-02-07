@@ -9,16 +9,20 @@ export default {
     },
     mounted() {
         (async () => {
-            const vm = this;
-            fetch("http://localhost:8080/api/getProfile/" + vm.$cookies.get("token"), {
+            const self = this;
+            fetch("http://localhost:8080/api/getProfile", {
                 method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': self.$cookies.get("token")
+                },
             })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (data) {
-                    vm.user = data.user;
-                });
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                self.user = data.user;
+            });
         })();
     }
 }

@@ -22,7 +22,7 @@ export default {
                 </div>
               </router-link>
             </li>
-            <li>
+            <li v-if="user.role == 2">
               <router-link to="/uzivatele" class="nav-link text-white">
                 <div class="py-2">
                   <i class="fa-sharp fa-solid fa-users fa-lg bi d-block mx-auto mb-1"></i>

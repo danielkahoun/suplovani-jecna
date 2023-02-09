@@ -184,6 +184,7 @@ export default {
                     <th scope="col">Jméno</th>
                     <th scope="col">Příjmení</th>
                     <th scope="col">Role</th>
+                    <th scope="col">Třída</th>
                     <th scope="col">Datum vytvoření</th>
                     <th scope="col">Akce</th>
                 </tr>
@@ -199,6 +200,8 @@ export default {
                         <span v-else-if="user.role == 1">učitel</span>
                         <span v-else>student</span>
                     </td>
+                    <td v-if="user.role == 1">třídní učitel {{user.class_name}}</td>
+                    <td v-else>{{user.class_name ? user.class_name : 'nepřiřazena'}}</td>
                     <td>{{new Date(user.creation_date).toLocaleDateString("cs-CZ")}}</td>
                     <td>
                         <div class="d-flex" style="margin:0 15px; gap:20px;">

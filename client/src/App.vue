@@ -7,8 +7,8 @@ export default {
             user: {}
         };
     },
-    mounted() {
-        (async () => {
+    methods: {
+        getProfile() {
             const self = this;
             fetch("http://localhost:8080/api/getProfile", {
                 method: "GET",
@@ -17,13 +17,27 @@ export default {
                     'Authorization': self.$cookies.get("token")
                 },
             })
-            .then(function (response) {
+            .then((response) => {
+                if(!response.ok) {
+                    throw new Error();
+                }
                 return response.json();
             })
-            .then(function (data) {
+            .then((data) => {
                 self.user = data.user;
+            })
+            .catch((error) => {
+                self.$cookies.remove("token");
+                window.location.replace("/");
             });
-        })();
+        }
+    },
+    mounted() {
+        if(self.$cookies.isKey("token")) {
+            this.getProfile();
+        }else {
+            if(window.location.pathname != "/") this.$router.push('/');
+        }
     }
 }
 </script>

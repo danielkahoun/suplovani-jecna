@@ -36,7 +36,9 @@ export default {
         if(self.$cookies.isKey("token")) {
             this.getProfile();
         }else {
-            if(window.location.pathname != "/") this.$router.push('/');
+            if(window.location.pathname != "/" && window.location.pathname != "/login") {
+                this.$router.push('/');
+            }
         }
     }
 }
@@ -48,6 +50,12 @@ export default {
 
 <style scope>
 @import 'bootstrap/dist/css/bootstrap.css';
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap');
+
+* {
+    font-family: 'Work Sans', sans-serif;
+
+}
 
 .router-link-active,
 .router-link-exact-active {

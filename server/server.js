@@ -6,7 +6,7 @@ const mysql = require('mysql');
 const app = module.exports = express()
 const port = 8080
 
-const allowedOrigins = ['http://127.0.0.1:5173','http://localhost:5173','http://localhost'];
+const allowedOrigins = ['http://127.0.0.1:5173','http://localhost:5173','http://localhost:8080','http://127.0.0.1:8080','http://localhost'];
 app.use(cors({
     origin: function (origin, callback) {
         if (!origin) return callback(null, true);
@@ -78,14 +78,14 @@ function getUserDetails(token, callback) {
 
 /** Web Routes (via Vue Router) */
 
-app.get('/', (req, res) => {
+app.get(['/','/login','/prehled','/uzivatele'], (req, res) => {
     res.writeHead(200, { "Content-type": "text/html" });
     res.end(fs.readFileSync("../client/dist/index.html"));
 });
 
 /** API Routes */
 
-app.post('/login', function(req, res) {
+app.post('/api/login', function(req, res) {
     const credentials = req.body.user;
     con.query("SELECT * FROM users WHERE username = "+mysql.escape(credentials.username)+" AND password = "+mysql.escape(hashPassword(credentials.password)), function (err, result) {
         if(err) return res.status(500).end();
@@ -160,7 +160,7 @@ app.get('/api/getUsers', isAdmin, (req, res, next) => {
 
 app.post('/api/addUser', isAdmin, (req, res, next) => {
     let username = req.body.first_name.normalize("NFD").replace(/[\u0300-\u036f]/g, "") + req.body.last_name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    con.query("INSERT INTO users(username, password, first_name, last_name, role, class_id) VALUES ("+mysql.escape(username.toLowerCase())+","+mysql.escape(hashPassword(req.body.password))+","+mysql.escape(req.body.first_name)+","+mysql.escape(req.body.last_name)+","+mysql.escape(req.body.role)+","+mysql.escape(req.body.class_id)+")", function (err, result) {
+    con.query("INSERT INTO users(username, password, first_name, last_name, role, class_id) VALUES ("+mysql.escape(username.toLowerCase())+","+mysql.escape(hashPassword(req.body.password))+","+mysql.escape(req.body.first_name)+","+mysql.escape(req.body.last_name)+","+mysql.escape(req.body.role)+","+mysql.escape((req.body.class_id == '' || req.body.class_id == undefined) ? null : req.body.class_id)+")", function (err, result) {
         if(err) res.status(500).end();
         
         res.writeHead(200, { "Content-type": "application/json" });

@@ -12,7 +12,7 @@ export default {
                 last_name: "",
                 password: "",
                 role: 0,
-                class_id: "",
+                class_id: null,
             }
         }
     },
@@ -162,7 +162,6 @@ export default {
                                 <div class="col">
                                     <label class="form-label">Třída</label>
                                     <select class="form-select" v-model="form.class_id" :disabled="form.role == 2">
-                                        <option value="">Žádná</option>
                                         <option v-for="cl in classes" :value="cl.id">{{cl.name}}</option>
                                     </select>
                                 </div>

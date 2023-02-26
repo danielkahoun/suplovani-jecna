@@ -31,7 +31,7 @@ export default {
               </router-link>
             </li>
             <li>
-              <router-link to="/" class="nav-link text-white">
+              <router-link to="/login" class="nav-link text-white">
                 <div class="py-2">
                   <i class="fa-sharp fa-solid fa-right-from-bracket fa-lg bi d-block mx-auto mb-1"></i>
                   Odhlásit se

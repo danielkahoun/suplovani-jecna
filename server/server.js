@@ -115,21 +115,33 @@ app.get('/api/getSchedule', function(req, res) {
 
         let query = "";
         if(data.role == 2) {
-            query = "SELECT lessons.*, classes.name AS class, users.last_name FROM lessons INNER JOIN classes ON classes.id = lessons.class_id INNER JOIN users ON users.id = lessons.teacher_id WHERE day = " + mysql.escape(new Date().getDay() + " ORDER BY day, hour ASC");
+            // admin
+            //query = "SELECT lessons.*, subjects.name AS subject, subjects.abbr AS subject_abbr, classes.name AS class, users.first_name, users.last_name FROM lessons INNER JOIN subjects ON subjects.id = lessons.subject_id INNER JOIN classes ON classes.id = lessons.class_id INNER JOIN users ON users.id = lessons.teacher_id WHERE day = " + mysql.escape(new Date().getDay()) + " ORDER BY day, hour ASC";
+            query = "SELECT lessons.*, subjects.name AS subject, subjects.abbr AS subject_abbr, classes.name AS class, users.first_name, users.last_name FROM lessons INNER JOIN subjects ON subjects.id = lessons.subject_id INNER JOIN classes ON classes.id = lessons.class_id INNER JOIN users ON users.id = lessons.teacher_id WHERE day = 2 ORDER BY class_id, day, hour ASC";
         }else if(data.role == 1) {
-            query = "SELECT lessons.*, classes.name AS class, users.last_name FROM lessons INNER JOIN classes ON classes.id = lessons.class_id INNER JOIN users ON users.id = lessons.teacher_id WHERE teacher_id = " + mysql.escape(data.id) + " ORDER BY day, hour ASC";
+            // teachers
+            query = "SELECT lessons.*, subjects.name AS subject, subjects.abbr AS subject_abbr, classes.name AS class, users.first_name, users.last_name FROM lessons INNER JOIN subjects ON subjects.id = lessons.subject_id INNER JOIN classes ON classes.id = lessons.class_id INNER JOIN users ON users.id = lessons.teacher_id WHERE teacher_id = " + mysql.escape(data.id) + " ORDER BY day, hour ASC";
         }else {
-            query = "SELECT lessons.*, classes.name AS class, users.last_name FROM lessons INNER JOIN classes ON classes.id = lessons.class_id INNER JOIN users ON users.id = lessons.teacher_id WHERE lessons.class_id = " + mysql.escape(data.class_id) + " ORDER BY day, hour ASC";
+            // students
+            query = "SELECT lessons.*, subjects.name AS subject, subjects.abbr AS subject_abbr, classes.name AS class, users.first_name, users.last_name FROM lessons INNER JOIN subjects ON subjects.id = lessons.subject_id INNER JOIN classes ON classes.id = lessons.class_id INNER JOIN users ON users.id = lessons.teacher_id WHERE lessons.class_id = " + mysql.escape(data.class_id) + " ORDER BY day, hour ASC";
         }
 
         con.query(query, function (err, result) {
             if (err) throw err;
 
             const groupedData = result.reduce((aggObj, child) => {
-                if(aggObj.hasOwnProperty(child.day)){
-                    aggObj[child.day].push(child);
+                if(data.role == 2) {
+                    if(aggObj.hasOwnProperty(child.class)){
+                        aggObj[child.class].push(child);
+                    }else {
+                        aggObj[child.class] = [child];
+                    }
                 }else {
-                    aggObj[child.day] = [child];
+                    if(aggObj.hasOwnProperty(child.day)){
+                        aggObj[child.day].push(child);
+                    }else {
+                        aggObj[child.day] = [child];
+                    }
                 }
                 return aggObj
             }, {})

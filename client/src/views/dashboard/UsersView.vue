@@ -58,6 +58,7 @@ export default {
             .then((response) => {
                 console.log(response.ok);
                 if (response.ok) {
+                    this.toggleModal();
                     this.form = {
                         first_name: "",
                         last_name: "",
@@ -85,6 +86,9 @@ export default {
                     this.users = this.users.filter(user => user.id != id);
                 }
             });
+        },
+        toggleModal() {
+            this.$refs.btn.click();
         }
     },
     computed: {
@@ -110,7 +114,7 @@ export default {
         
         <div class="d-flex">
             <h3>Správa uživatelů</h3>
-            <button type="button" class="btn btn-primary btn-sm ms-auto" data-bs-toggle="modal" data-bs-target="#addUserModal">
+            <button type="button" class="btn btn-primary btn-sm ms-auto" ref="btn" data-bs-toggle="modal" data-bs-target="#addUserModal">
                 Přidat uživatele
             </button>
         </div>
@@ -121,7 +125,7 @@ export default {
 
         <!-- Modal -->
         <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="addUserModalLabel">Přidat uživatele</h5>
@@ -204,7 +208,7 @@ export default {
                     <td>{{new Date(user.creation_date).toLocaleDateString("cs-CZ")}}</td>
                     <td>
                         <div class="d-flex" style="margin:0 15px; gap:20px;">
-                            <a class="text-decoration-none" v-on:click="deleteUser(user.id)"><i class="fa-sharp fa-solid fa-user-xmark"></i>&nbsp;Smazat</a>
+                            <a class="text-decoration-none" style="cursor:pointer;" v-on:click="deleteUser(user.id)"><i class="fa-sharp fa-solid fa-user-xmark"></i>&nbsp;Smazat</a>
                         </div>
                     </td>
                 </tr>

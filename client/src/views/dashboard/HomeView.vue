@@ -130,19 +130,6 @@ export default {
 
         <h3>Přehled</h3>
         <hr>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Předchozí den</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">05.02.</a></li>
-                <li class="page-item"><a class="page-link" href="#">06.02.</a></li>
-                <li class="page-item"><a class="page-link" href="#">07.02</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Další den</a>
-                </li>
-            </ul>
-        </nav>
         <table class="table table-bordered bg-white">
             <thead class="text-center">
                 <tr>
@@ -172,7 +159,7 @@ export default {
                         :style="(position.x == i && position.y == key) && { backgroundColor: '#eeeeee', cursor: 'pointer' }"
                         v-on:click="toggleModal">
                         <template v-for="x in 10">
-                            <div class="w-100 h-100" v-if="(value[x - 1] != null && value[x - 1].hour == i)" v-on:mouseover="select.col = (x-1)">
+                            <div class="w-100 h-100" v-if="(value[x - 1] != null && value[x - 1].hour == i)" v-on:mouseover="select.col = (x-1)" :class="(value[x - 1].type == 'CANCELLED') && 'bg-success'">
                                 <div class="row">
                                     <div class="col text-start">{{ value[x - 1].last_name.slice(0, 2) }}</div>
                                     <div class="col text-end">{{ value[x - 1].classroom }}</div>

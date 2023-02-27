@@ -117,13 +117,13 @@ app.get('/api/getSchedule', function(req, res) {
         if(data.role == 2) {
             // admin
             //query = "SELECT lessons.*, subjects.name AS subject, subjects.abbr AS subject_abbr, classes.name AS class, users.first_name, users.last_name FROM lessons INNER JOIN subjects ON subjects.id = lessons.subject_id INNER JOIN classes ON classes.id = lessons.class_id INNER JOIN users ON users.id = lessons.teacher_id WHERE day = " + mysql.escape(new Date().getDay()) + " ORDER BY day, hour ASC";
-            query = "SELECT lessons.*, subjects.name AS subject, subjects.abbr AS subject_abbr, classes.name AS class, users.first_name, users.last_name FROM lessons INNER JOIN subjects ON subjects.id = lessons.subject_id INNER JOIN classes ON classes.id = lessons.class_id INNER JOIN users ON users.id = lessons.teacher_id WHERE day = 2 ORDER BY class_id, day, hour ASC";
+            query = "SELECT * FROM schedule WHERE day = 2 ";
         }else if(data.role == 1) {
             // teachers
-            query = "SELECT lessons.*, subjects.name AS subject, subjects.abbr AS subject_abbr, classes.name AS class, users.first_name, users.last_name FROM lessons INNER JOIN subjects ON subjects.id = lessons.subject_id INNER JOIN classes ON classes.id = lessons.class_id INNER JOIN users ON users.id = lessons.teacher_id WHERE teacher_id = " + mysql.escape(data.id) + " ORDER BY day, hour ASC";
+            query = "SELECT * FROM schedule WHERE teacher_id = " + mysql.escape(data.id);
         }else {
             // students
-            query = "SELECT lessons.*, subjects.name AS subject, subjects.abbr AS subject_abbr, classes.name AS class, users.first_name, users.last_name FROM lessons INNER JOIN subjects ON subjects.id = lessons.subject_id INNER JOIN classes ON classes.id = lessons.class_id INNER JOIN users ON users.id = lessons.teacher_id WHERE lessons.class_id = " + mysql.escape(data.class_id) + " ORDER BY day, hour ASC";
+            query = "SELECT * FROM schedule WHERE class_id = " + mysql.escape(data.class_id);
         }
 
         con.query(query, function (err, result) {

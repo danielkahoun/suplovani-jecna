@@ -21,7 +21,7 @@ export default {
     methods: {
         toggleModal() {
             this.$refs.btn.click();
-            if(this.select.row != null && this.select.col != null)
+            if (this.select.row != null && this.select.col != null)
                 this.getSelected();
         },
         getSelected() {
@@ -52,12 +52,11 @@ export default {
 </script>
 
 <template>
-
     <NavbarComponent :user="user" />
 
     <div class="container">
 
-
+        <!-- 
         <p>
             {{ position.x }}
             {{ position.y }}
@@ -66,7 +65,7 @@ export default {
         <p>
             {{ (select.row == null) ? 'žádné' : select.row }}
             {{ (select.col == null) ? 'žádné' : select.col }}
-        </p>
+        </p>-->
 
         <button ref="btn" data-bs-toggle="modal" data-bs-target="#substitution" hidden></button>
         <div class="modal fade" id="substitution" tabindex="-1" aria-labelledby="substitutionLabel" aria-hidden="true"
@@ -82,11 +81,16 @@ export default {
                         <table class="table table-bordered table-striped" v-if="this.select.data != null">
                             <thead>
                                 <tr class="bg-dark">
-                                    <th colspan="2" class="text-white text-center" v-if="select.data.day == 1">pondělí - {{ select.data.hour }}. hodina</th>
-                                    <th colspan="2" class="text-white text-center" v-else-if="select.data.day == 2">úterý - {{ select.data.hour }}. hodina</th>
-                                    <th colspan="2" class="text-white text-center" v-else-if="select.data.day == 3">středa - {{ select.data.hour }}. hodina</th>
-                                    <th colspan="2" class="text-white text-center" v-else-if="select.data.day == 4">čtvrtek - {{ select.data.hour }}. hodina</th>
-                                    <th colspan="2" class="text-white text-center" v-else-if="select.data.day == 5">pátek - {{ select.data.hour }}. hodina</th>
+                                    <th colspan="2" class="text-white text-center" v-if="select.data.day == 1">pondělí - {{
+                                        select.data.hour }}. hodina</th>
+                                    <th colspan="2" class="text-white text-center" v-else-if="select.data.day == 2">úterý -
+                                        {{ select.data.hour }}. hodina</th>
+                                    <th colspan="2" class="text-white text-center" v-else-if="select.data.day == 3">středa -
+                                        {{ select.data.hour }}. hodina</th>
+                                    <th colspan="2" class="text-white text-center" v-else-if="select.data.day == 4">čtvrtek
+                                        - {{ select.data.hour }}. hodina</th>
+                                    <th colspan="2" class="text-white text-center" v-else-if="select.data.day == 5">pátek -
+                                        {{ select.data.hour }}. hodina</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -104,7 +108,11 @@ export default {
                                 </tr>
                                 <tr>
                                     <th scope="row">Změny v rozvrhu</th>
-                                    <td>žádné</td>
+                                    <td class="text-success fw-bold" v-if="select.data.type == 'CANCELLED'">odpadá</td>
+                                    <td class="text-danger fw-bold" v-else-if="select.data.type == 'CHANGE'">změna učebny</td>
+                                    <td class="text-success fw-bold" v-else-if="select.data.type == 'CUSTOM'">přesun na jiný den</td>
+                                    <td class="text-primary fw-bold" v-else-if="select.data.type == 'SPECIAL'">exkurze</td>
+                                    <td v-else>žádné</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Detailní informace</th>
@@ -128,7 +136,7 @@ export default {
 
 
 
-        <h3>Přehled</h3>
+        <h3 class="mt-4">Přehled</h3>
         <hr>
         <table class="table table-bordered bg-white">
             <thead class="text-center">
@@ -147,36 +155,45 @@ export default {
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(value, key) in schedule" v-on:mouseover="position.y = parseInt(key); select.row = parseInt(key);">
+                <tr v-for="(value, key) in schedule"
+                    v-on:mouseover="position.y = parseInt(key); select.row = parseInt(key);">
                     <td v-if="key == 1">pondělí<br><b><!--01.11.2022--></b></td>
                     <td v-else-if="key == 2">úterý<br><b><!--01.11.2022--></b></td>
                     <td v-else-if="key == 3">středa<br><b><!--01.11.2022--></b></td>
                     <td v-else-if="key == 4">čtvrtek<br><b><!--01.11.2022--></b></td>
                     <td v-else-if="key == 5">pátek<br><b><!--01.11.2022--></b></td>
                     <td v-else>{{ key }}</td>
-                    <td v-for="i in 10" v-on:mouseover="position.x = i;"
-                        v-on:mouseenter="select.row = null; select.col = null; select.data = null;"
+                    <td class="p-0" v-for="i in 10" v-on:mouseover="position.x = i;"
                         :style="(position.x == i && position.y == key) && { backgroundColor: '#eeeeee', cursor: 'pointer' }"
                         v-on:click="toggleModal">
                         <template v-for="x in 10">
-                            <div class="w-100 h-100" v-if="(value[x - 1] != null && value[x - 1].hour == i)" v-on:mouseover="select.col = (x-1)" :class="(value[x - 1].type == 'CANCELLED') && 'bg-success'">
-                                <div class="row">
-                                    <div class="col text-start">{{ value[x - 1].last_name.slice(0, 2) }}</div>
-                                    <div class="col text-end">{{ value[x - 1].classroom }}</div>
-                                </div>
-                                <div class="text-center">
-                                    <h5>{{ value[x - 1].subject_abbr }}</h5>
-                                </div>
-                                <div class="row">
-                                    <div class="col text-start">{{ value[x - 1].class }}</div>
-                                    <div class="col text-end"></div>
+                            <div class="w-100 h-100" v-if="(value[x-1] != null && value[x-1].hour == i)"
+                                v-on:mouseover="(value[x-1] != null && value[x-1].hour == i) ? select.col = (x-1) : select.col = null;"
+                                :style="[(value[x-1].type == 'CANCELLED') && { backgroundColor: '#d9ead3' },
+                                        (value[x-1].type == 'CHANGE') && { backgroundColor: '#f4cccc' },
+                                        (value[x-1].type == 'CUSTOM') && { backgroundColor: '#d0e0e3' },
+                                        (value[x-1].type == 'SPECIAL') && { backgroundColor: '#d9d2e9' }]">
+                                <div class="p-2">
+                                    <div class="row">
+                                        <div class="col text-start" v-if="user.role == 1">{{ value[x-1].class }}</div>
+                                        <div class="col text-start" v-else>{{ value[x-1].last_name.slice(0, 2) }}</div>
+                                        <div class="col text-end">{{ value[x-1].classroom }}</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <h5>{{ value[x-1].subject_abbr }}</h5>
+                                    </div>
+                                    <div class="row">
+                                        <small class="col text-center" v-if="value[x-1].type == 'CANCELLED'">odpadá</small>
+                                        <small class="col text-center" v-if="value[x-1].type == 'CHANGE'">změna</small>
+                                        <small class="col text-center" v-if="value[x-1].type == 'CUSTOM'">přesun na 4.h</small>
+                                        <small class="col text-center" v-if="value[x-1].type == 'SPECIAL'">beseda</small>
+                                        <small class="col text-center invisible" v-if="value[x-1].type == null">status</small>
+                                    </div>
                                 </div>
                             </div>
                         </template>
                     </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-</template>
+            </tr>
+        </tbody>
+    </table>
+</div></template>

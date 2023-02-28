@@ -28,17 +28,17 @@
             <div class="bg-slate-100 w-full rounded-md p-4">
                 <i class="fa-solid fa-bolt text-4xl text-yellow-500"></i>
                 <h3 class="text-gray-800 text-xl font-medium mt-2">Snadné ovládání</h3>
-                <p class="text-gray-600">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab, recusandae.</p>
+                <p class="text-gray-600">Webový systém byl navržen pro jednoduché ovládání. Tvorba suplování je snadná a rychlá.</p>
             </div>
             <div class="bg-slate-100 w-full rounded-md p-4">
                 <i class="fa-duotone fa-users text-4xl text-red-500"></i>
                 <h3 class="text-gray-800 text-xl font-medium mt-2">Správa uživatelů</h3>
-                <p class="text-gray-600">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab, recusandae.</p>
+                <p class="text-gray-600">Přímo z webového rozhraní lze vytvářet a mazat uživatele a nastavovat jim uživatelská práva.</p>
             </div>
             <div class="bg-slate-100 w-full rounded-md p-4">
                 <i class="fa-duotone fa-calendar-days text-blue-500 text-4xl"></i>
                 <h3 class="text-gray-800 text-xl font-medium mt-2">Integrace s kalendáři</h3>
-                <p class="text-gray-600">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab, recusandae.</p>
+                <p class="text-gray-600">Rozvrh a změny v něm si lze zobrazit např. v Google kalendáři bez nutnosti navštěvovat web.</p>
             </div>
         </div>
         <div class="text-center my-24">

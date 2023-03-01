@@ -170,6 +170,15 @@ app.get('/api/getTeachers', function(req, res) {
     });
 });
 
+app.get('/api/getSubjects', function(req, res) {
+    con.query("SELECT * FROM subjects", function (err, result) {
+        if(err) return res.status(500).end();
+        
+        res.writeHead(200, { "Content-type": "application/json" });
+        res.end(JSON.stringify(result));
+    });
+});
+
 app.get('/api/getUsers', isAdmin, (req, res, next) => {
     con.query("SELECT users.id,username,first_name,last_name,role,class_id,creation_date,classes.name as class_name FROM users LEFT JOIN classes ON users.class_id = classes.id", function (err, result) {
         if(err) return res.status(500).end();

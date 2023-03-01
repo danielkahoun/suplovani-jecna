@@ -16,6 +16,7 @@ export default {
                 data: null
             },
             teachers: null,
+            subjects: null,
             openModal: false
         }
     },
@@ -60,11 +61,28 @@ export default {
                 .then(function (data) {
                     self.teachers = data;
                 });
+        },
+        getSubjects() {
+            const self = this;
+            fetch("http://localhost:8080/api/getSubjects", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': self.$cookies.get("token")
+                },
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    self.subjects = data;
+                });
         }
     },
     mounted() {
         this.getSchedule();
         this.getTeachers();
+        this.getSubjects();
     },
     components: { NavbarComponent }
 }
@@ -127,8 +145,8 @@ export default {
                                 <tr>
                                     <th scope="row">Změny v rozvrhu</th>
                                     <td class="fw-bold" style="color:#93c47d;" v-if="select.data.type == 'CANCELLED'">odpadá</td>
-                                    <td class="fw-bold" style="color:#e06666;" v-else-if="select.data.type == 'CHANGE'">změna učebny</td>
-                                    <td class="fw-bold" style="color:#76a5af;" v-else-if="select.data.type == 'CUSTOM'">přesun na jiný den</td>
+                                    <td class="fw-bold" style="color:#e06666;" v-else-if="select.data.type == 'CHANGE'">změna</td>
+                                    <td class="fw-bold" style="color:#76a5af;" v-else-if="select.data.type == 'CUSTOM'">{{ select.data.custom_title }}</td>
                                     <td v-else>žádné</td>
                                 </tr>
                                 <tr>
@@ -141,41 +159,39 @@ export default {
                             <hr>
                             <h5 class="modal-title mb-3">Provést změnu</h5>
                             <form v-if="select.data != null">
-                                <div class="row">
+                                <div class="row mb-3">
                                     <div class="col">
                                         <label class="form-label">Typ změny</label>
-                                        <select class="form-select" aria-label="Default select example" v-model="select.data.type">
+                                        <select class="form-select" v-model="select.data.type">
                                             <option>žádné změny</option>
                                             <option value="CANCELLED">zrušit hodinu (odpadá)</option>
                                             <option value="CHANGE">změna (učitele, učebny, předmětu)</option>
-                                            <option value="SPECIAL">ostatní (akce, beseda, exkurze..)</option>
                                             <option value="CUSTOM">vlastní</option>
                                         </select>
                                     </div>
                                     <div class="col">
-                                        <template v-if="select.data.type == 'CANCELLED'">
-                                            
-                                        </template>
                                         <template v-if="select.data.type == 'CHANGE'">
                                             <label class="form-label">Změna učebny</label>
-                                            <input type="text" class="form-control" placeholder="...">
+                                            <input type="text" class="form-control mb-3" placeholder="Označení učebny">
                                             <label class="form-label">Změna učitele</label>
-                                            <input type="text" class="form-control" placeholder="...">
+                                            <select class="form-select mb-3" v-model="select.data.new_teacher">
+                                                <option></option>
+                                                <option v-for="teacher in teachers" :value="teacher.id">{{ teacher.first_name+' '+teacher.last_name }}</option>
+                                            </select>
                                             <label class="form-label">Změna předmětu</label>
-                                            <input type="text" class="form-control" placeholder="...">
-                                        </template>
-                                        <template v-if="select.data.type == 'SPECIAL'">
-                                            <label class="form-label">Název akce</label>
-                                            <input type="text" class="form-control" placeholder="beseda, exkurze, workshop..">
+                                            <select class="form-select" v-model="select.data.new_subject">
+                                                <option></option>
+                                                <option v-for="subject in subjects" :value="subject.id">{{ subject.name }}</option>
+                                            </select>
                                         </template>
                                         <template v-if="select.data.type == 'CUSTOM'">
                                             <label class="form-label">Název události</label>
-                                            <input type="text" class="form-control" placeholder="přesun, ...">
+                                            <input type="text" class="form-control" placeholder="vlastní název události" v-model="select.data.custom_title">
                                         </template>
-                                        <label class="form-label">Doplňující informace</label>
-                                        <input type="text" class="form-control" placeholder="..." v-model="select.data.information">    
                                     </div>
                                 </div>
+                                <label class="form-label">Doplňující informace (volitelné)</label>
+                                <input type="text" class="form-control" placeholder="Bližší informace" v-model="select.data.information"> 
                                 <button type="submit" class="btn btn-primary mt-3">Uložit změny</button>
                             </form>
                         </div>

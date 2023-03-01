@@ -15,6 +15,7 @@ export default {
                 col: null,
                 data: null
             },
+            teachers: null,
             openModal: false
         }
     },
@@ -27,10 +28,8 @@ export default {
         getSelected() {
             let row = JSON.parse(JSON.stringify(this.schedule[this.select.row]));
             this.select.data = row[this.select.col];
-        }
-    },
-    mounted() {
-        (async () => {
+        },
+        getSchedule() {
             const self = this;
             fetch("http://localhost:8080/api/getSchedule", {
                 method: 'GET',
@@ -45,7 +44,27 @@ export default {
                 .then(function (data) {
                     self.schedule = data;
                 });
-        })();
+        },
+        getTeachers() {
+            const self = this;
+            fetch("http://localhost:8080/api/getTeachers", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': self.$cookies.get("token")
+                },
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    self.teachers = data;
+                });
+        }
+    },
+    mounted() {
+        this.getSchedule();
+        this.getTeachers();
     },
     components: { NavbarComponent }
 }
@@ -56,7 +75,7 @@ export default {
 
     <div class="container">
 
-        <!-- 
+        
         <p>
             {{ position.x }}
             {{ position.y }}
@@ -65,16 +84,15 @@ export default {
         <p>
             {{ (select.row == null) ? 'žádné' : select.row }}
             {{ (select.col == null) ? 'žádné' : select.col }}
-        </p>-->
+        </p>
 
         <button ref="btn" data-bs-toggle="modal" data-bs-target="#substitution" hidden></button>
         <div class="modal fade" id="substitution" tabindex="-1" aria-labelledby="substitutionLabel" aria-hidden="true"
             v-on:mouseleave="position.x = 0; position.y = 0;">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="substitutionLabel" v-if="user.role == 2">Přidat změnu v rozvrhu</h5>
-                        <h5 class="modal-title" id="substitutionLabel" v-else>Podrobnosti</h5>
+                        <h5 class="modal-title" id="substitutionLabel">Podrobnosti</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -108,27 +126,59 @@ export default {
                                 </tr>
                                 <tr>
                                     <th scope="row">Změny v rozvrhu</th>
-                                    <td class="text-success fw-bold" v-if="select.data.type == 'CANCELLED'">odpadá</td>
-                                    <td class="text-danger fw-bold" v-else-if="select.data.type == 'CHANGE'">změna učebny</td>
-                                    <td class="text-success fw-bold" v-else-if="select.data.type == 'CUSTOM'">přesun na jiný den</td>
-                                    <td class="text-primary fw-bold" v-else-if="select.data.type == 'SPECIAL'">exkurze</td>
+                                    <td class="fw-bold" style="color:#93c47d;" v-if="select.data.type == 'CANCELLED'">odpadá</td>
+                                    <td class="fw-bold" style="color:#e06666;" v-else-if="select.data.type == 'CHANGE'">změna učebny</td>
+                                    <td class="fw-bold" style="color:#76a5af;" v-else-if="select.data.type == 'CUSTOM'">přesun na jiný den</td>
                                     <td v-else>žádné</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Detailní informace</th>
-                                    <td>žádné</td>
+                                    <td>{{ (select.data.information == null || select.data.information == "") ? 'žádné' : select.data.information }}</td>
                                 </tr>
                             </tbody>
                         </table>
                         <div v-if="user.role == 2">
-                            <h5 class="modal-title">Provést změnu</h5>
                             <hr>
-
+                            <h5 class="modal-title mb-3">Provést změnu</h5>
+                            <form v-if="select.data != null">
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="form-label">Typ změny</label>
+                                        <select class="form-select" aria-label="Default select example" v-model="select.data.type">
+                                            <option>žádné změny</option>
+                                            <option value="CANCELLED">zrušit hodinu (odpadá)</option>
+                                            <option value="CHANGE">změna (učitele, učebny, předmětu)</option>
+                                            <option value="SPECIAL">ostatní (akce, beseda, exkurze..)</option>
+                                            <option value="CUSTOM">vlastní</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <template v-if="select.data.type == 'CANCELLED'">
+                                            
+                                        </template>
+                                        <template v-if="select.data.type == 'CHANGE'">
+                                            <label class="form-label">Změna učebny</label>
+                                            <input type="text" class="form-control" placeholder="...">
+                                            <label class="form-label">Změna učitele</label>
+                                            <input type="text" class="form-control" placeholder="...">
+                                            <label class="form-label">Změna předmětu</label>
+                                            <input type="text" class="form-control" placeholder="...">
+                                        </template>
+                                        <template v-if="select.data.type == 'SPECIAL'">
+                                            <label class="form-label">Název akce</label>
+                                            <input type="text" class="form-control" placeholder="beseda, exkurze, workshop..">
+                                        </template>
+                                        <template v-if="select.data.type == 'CUSTOM'">
+                                            <label class="form-label">Název události</label>
+                                            <input type="text" class="form-control" placeholder="přesun, ...">
+                                        </template>
+                                        <label class="form-label">Doplňující informace</label>
+                                        <input type="text" class="form-control" placeholder="..." v-model="select.data.information">    
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-3">Uložit změny</button>
+                            </form>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zavřít</button>
-                        <button type="button" class="btn btn-primary">Provést změnu</button>
                     </div>
                 </div>
             </div>
@@ -156,7 +206,7 @@ export default {
             </thead>
             <tbody>
                 <tr v-for="(value, key) in schedule"
-                    v-on:mouseover="position.y = parseInt(key); select.row = parseInt(key);">
+                    v-on:mouseover="position.y = (user.role == 2) ? key : parseInt(key); select.row = (user.role == 2) ? key : parseInt(key);">
                     <td v-if="key == 1">pondělí<br><b><!--01.11.2022--></b></td>
                     <td v-else-if="key == 2">úterý<br><b><!--01.11.2022--></b></td>
                     <td v-else-if="key == 3">středa<br><b><!--01.11.2022--></b></td>
@@ -171,8 +221,7 @@ export default {
                                 v-on:mouseover="(value[x-1] != null && value[x-1].hour == i) ? select.col = (x-1) : select.col = null;"
                                 :style="[(value[x-1].type == 'CANCELLED') && { backgroundColor: '#d9ead3' },
                                         (value[x-1].type == 'CHANGE') && { backgroundColor: '#f4cccc' },
-                                        (value[x-1].type == 'CUSTOM') && { backgroundColor: '#d0e0e3' },
-                                        (value[x-1].type == 'SPECIAL') && { backgroundColor: '#d9d2e9' }]">
+                                        (value[x-1].type == 'CUSTOM') && { backgroundColor: '#d0e0e3' }]">
                                 <div class="p-2">
                                     <div class="row">
                                         <div class="col text-start" v-if="user.role == 1">{{ value[x-1].class }}</div>
@@ -185,8 +234,7 @@ export default {
                                     <div class="row">
                                         <small class="col text-center" v-if="value[x-1].type == 'CANCELLED'">odpadá</small>
                                         <small class="col text-center" v-if="value[x-1].type == 'CHANGE'">změna</small>
-                                        <small class="col text-center" v-if="value[x-1].type == 'CUSTOM'">přesun na 4.h</small>
-                                        <small class="col text-center" v-if="value[x-1].type == 'SPECIAL'">beseda</small>
+                                        <small class="col text-center" v-if="value[x-1].type == 'CUSTOM'">{{ value[x-1].custom_title }}</small>
                                         <small class="col text-center invisible" v-if="value[x-1].type == null">status</small>
                                     </div>
                                 </div>

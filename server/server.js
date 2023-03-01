@@ -117,7 +117,7 @@ app.get('/api/getSchedule', function(req, res) {
         if(data.role == 2) {
             // admin
             //query = "SELECT lessons.*, subjects.name AS subject, subjects.abbr AS subject_abbr, classes.name AS class, users.first_name, users.last_name FROM lessons INNER JOIN subjects ON subjects.id = lessons.subject_id INNER JOIN classes ON classes.id = lessons.class_id INNER JOIN users ON users.id = lessons.teacher_id WHERE day = " + mysql.escape(new Date().getDay()) + " ORDER BY day, hour ASC";
-            query = "SELECT * FROM schedule WHERE day = 2 ";
+            query = "SELECT * FROM schedule WHERE day = " + mysql.escape(new Date().getDay());
         }else if(data.role == 1) {
             // teachers
             query = "SELECT * FROM schedule WHERE teacher_id = " + mysql.escape(data.id);
@@ -154,6 +154,15 @@ app.get('/api/getSchedule', function(req, res) {
 
 app.get('/api/getClasses', function(req, res) {
     con.query("SELECT * FROM classes", function (err, result) {
+        if(err) return res.status(500).end();
+        
+        res.writeHead(200, { "Content-type": "application/json" });
+        res.end(JSON.stringify(result));
+    });
+});
+
+app.get('/api/getTeachers', function(req, res) {
+    con.query("SELECT users.id, users.first_name, users.last_name FROM users WHERE role = 1", function (err, result) {
         if(err) return res.status(500).end();
         
         res.writeHead(200, { "Content-type": "application/json" });

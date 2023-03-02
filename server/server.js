@@ -188,6 +188,18 @@ app.get('/api/getUsers', isAdmin, (req, res, next) => {
     });
 });
 
+app.post('/api/addSubstitution', isAdmin, (req, res, next) => {
+    con.query("INSERT INTO substitutions(type, date, hour, new_teacher, new_classroom, new_subject, custom_title, information) VALUES ("+mysql.escape(req.body.type)+","+mysql.escape(new Date().toJSON().slice(0, 10))+","+mysql.escape(req.body.hour)+","+mysql.escape(req.body.new_teacher)+","+mysql.escape(req.body.new_classroom)+","+mysql.escape(req.body.new_subject)+","+mysql.escape(req.body.custom_title)+","+mysql.escape(req.body.information)+")", function (err, result) {
+        if(err) {
+            console.log(err);
+            return res.status(500).end();
+        }
+
+        res.writeHead(200, { "Content-type": "application/json" });
+        res.end();
+    });
+});
+
 app.post('/api/addUser', isAdmin, (req, res, next) => {
     let username = req.body.first_name.normalize("NFD").replace(/[\u0300-\u036f]/g, "") + req.body.last_name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     con.query("INSERT INTO users(username, password, first_name, last_name, role, class_id) VALUES ("+mysql.escape(username.toLowerCase())+","+mysql.escape(hashPassword(req.body.password))+","+mysql.escape(req.body.first_name)+","+mysql.escape(req.body.last_name)+","+mysql.escape(req.body.role)+","+mysql.escape((req.body.class_id == '' || req.body.class_id == undefined) ? null : req.body.class_id)+")", function (err, result) {

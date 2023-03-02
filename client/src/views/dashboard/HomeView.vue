@@ -17,7 +17,8 @@ export default {
             },
             teachers: null,
             subjects: null,
-            openModal: false
+            openModal: false,
+            currentDate: null
         }
     },
     methods: {
@@ -77,7 +78,26 @@ export default {
                 .then(function (data) {
                     self.subjects = data;
                 });
-        }
+        },
+        addSubstitution() {
+            const self = this;
+            fetch("http://localhost:8080/api/addSubstitution", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': self.$cookies.get("token")
+                },
+                body: JSON.stringify(this.select.data)
+            })
+            .then((response) => {
+                console.log(response.ok);
+                if (response.ok) {
+                    this.toggleModal();
+                    this.select.data = null;
+                    this.getSchedule();
+                }
+            });
+        },
     },
     mounted() {
         this.getSchedule();
@@ -158,7 +178,7 @@ export default {
                         <div v-if="user.role == 2">
                             <hr>
                             <h5 class="modal-title mb-3">Provést změnu</h5>
-                            <form v-if="select.data != null">
+                            <div v-if="select.data != null">
                                 <div class="row mb-3">
                                     <div class="col">
                                         <label class="form-label">Typ změny</label>
@@ -192,8 +212,8 @@ export default {
                                 </div>
                                 <label class="form-label">Doplňující informace (volitelné)</label>
                                 <input type="text" class="form-control" placeholder="Bližší informace" v-model="select.data.information"> 
-                                <button type="submit" class="btn btn-primary mt-3">Uložit změny</button>
-                            </form>
+                                <button class="btn  btn-primary mt-3" v-on:click="addSubstitution">Uložit změny</button>
+                            </div>
                         </div>
                     </div>
                 </div>

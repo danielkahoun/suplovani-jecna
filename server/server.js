@@ -189,11 +189,26 @@ app.get('/api/getUsers', isAdmin, (req, res, next) => {
 });
 
 app.post('/api/addSubstitution', isAdmin, (req, res, next) => {
-    con.query("INSERT INTO substitutions(type, date, hour, new_teacher, new_classroom, new_subject, custom_title, information) VALUES ("+mysql.escape(req.body.type)+","+mysql.escape(new Date().toJSON().slice(0, 10))+","+mysql.escape(req.body.hour)+","+mysql.escape(req.body.new_teacher)+","+mysql.escape(req.body.new_classroom)+","+mysql.escape(req.body.new_subject)+","+mysql.escape(req.body.custom_title)+","+mysql.escape(req.body.information)+")", function (err, result) {
-        if(err) {
-            console.log(err);
-            return res.status(500).end();
-        }
+    con.query("INSERT INTO substitutions(lesson_id, type, date, new_subject_id, new_teacher_id, new_room, custom_title, information) VALUES ("+mysql.escape(req.body.id)+","+mysql.escape(req.body.type)+","+mysql.escape(new Date().toJSON().slice(0, 10))+","+mysql.escape(req.body.new_subject_id)+","+mysql.escape(req.body.new_teacher_id)+","+mysql.escape(req.body.new_room)+","+mysql.escape(req.body.custom_title)+","+mysql.escape(req.body.information)+")", function (err, result) {
+        if(err) return res.status(500).end();
+
+        res.writeHead(200, { "Content-type": "application/json" });
+        res.end();
+    });
+});
+
+app.post('/api/editSubstitution', isAdmin, (req, res, next) => {
+    con.query("UPDATE substitutions SET type = "+mysql.escape(req.body.type)+", new_subject_id = "+mysql.escape(req.body.new_subject_id)+", new_teacher_id = "+mysql.escape(req.body.new_teacher_id)+", new_room = "+mysql.escape(req.body.new_room)+", custom_title = "+mysql.escape(req.body.custom_title)+", information = "+mysql.escape(req.body.information)+" WHERE id = "+mysql.escape(req.body.substitution_id), function (err, result) {
+        if(err) return res.status(500).end();
+
+        res.writeHead(200, { "Content-type": "application/json" });
+        res.end();
+    });
+});
+
+app.post('/api/removeSubstitution', isAdmin, (req, res, next) => {
+    con.query("DELETE FROM substitutions WHERE id = "+mysql.escape(req.body.id), function (err, result) {
+        if(err) return res.status(500).end();
 
         res.writeHead(200, { "Content-type": "application/json" });
         res.end();

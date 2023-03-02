@@ -98,6 +98,48 @@ export default {
                 }
             });
         },
+        editSubstitution() {
+            const self = this;
+            fetch("http://localhost:8080/api/editSubstitution", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': self.$cookies.get("token")
+                },
+                body: JSON.stringify(this.select.data)
+            })
+            .then((response) => {
+                console.log(response.ok);
+                if (response.ok) {
+                    this.toggleModal();
+                    this.select.data = null;
+                    this.getSchedule();
+                }
+            });
+        },
+        removeSubstitution() {
+            const self = this;
+            fetch("http://localhost:8080/api/removeSubstitution", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': self.$cookies.get("token")
+                },
+                body: JSON.stringify({id:this.select.data.substitution_id})
+            })
+            .then((response) => {
+                console.log(response.ok);
+                if (response.ok) {
+                    this.toggleModal();
+                    this.select.data = null;
+                    this.getSchedule();
+                }
+            });
+        },
+        getTeacherAbbr(name) {
+            let value = name.split(" ");
+            return value[1].slice(0, 2);
+        }
     },
     mounted() {
         this.getSchedule();
@@ -113,7 +155,7 @@ export default {
 
     <div class="container">
 
-        
+        <!--
         <p>
             {{ position.x }}
             {{ position.y }}
@@ -122,7 +164,7 @@ export default {
         <p>
             {{ (select.row == null) ? 'žádné' : select.row }}
             {{ (select.col == null) ? 'žádné' : select.col }}
-        </p>
+        </p>-->
 
         <button ref="btn" data-bs-toggle="modal" data-bs-target="#substitution" hidden></button>
         <div class="modal fade" id="substitution" tabindex="-1" aria-labelledby="substitutionLabel" aria-hidden="true"
@@ -152,21 +194,28 @@ export default {
                             <tbody>
                                 <tr>
                                     <th scope="row">Předmět</th>
-                                    <td><b>{{ select.data.subject_abbr }}</b> - {{ select.data.subject }}</td>
+                                    <td v-if="select.data.new_subject_name == null">{{ select.data.subject_abbr }} - {{ select.data.subject_name }}</td>
+                                    <td v-else><s>{{ select.data.subject_abbr }} - {{ select.data.subject_name }}</s><br><b>{{ select.data.new_subject_abbr }} - {{ select.data.new_subject_name }}</b></td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Vyučující</th>
-                                    <td>{{ select.data.first_name }} {{ select.data.last_name }}</td>
+                                    <td v-if="select.data.new_teacher_name == null">{{ select.data.teacher_name }}</td>
+                                    <td v-else><s>{{ select.data.teacher_name }}</s><br><b>{{ select.data.new_teacher_name }}</b></td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Třída</th>
                                     <td>{{ select.data.class }}</td>
                                 </tr>
                                 <tr>
+                                    <th scope="row">Učebna</th>
+                                    <td v-if="select.data.new_room == null">{{ select.data.room }}</td>
+                                    <td v-else><s>{{ select.data.room }}</s><br><b>{{ select.data.new_room }}</b></td>
+                                </tr>
+                                <tr>
                                     <th scope="row">Změny v rozvrhu</th>
                                     <td class="fw-bold" style="color:#93c47d;" v-if="select.data.type == 'CANCELLED'">odpadá</td>
                                     <td class="fw-bold" style="color:#e06666;" v-else-if="select.data.type == 'CHANGE'">změna</td>
-                                    <td class="fw-bold" style="color:#76a5af;" v-else-if="select.data.type == 'CUSTOM'">{{ select.data.custom_title }}</td>
+                                    <td class="fw-bold" style="color:#76a5af;" v-else-if="select.data.type == 'CUSTOM'">{{ (select.data.custom_title == null || select.data.custom_title == '') ? '<bez názvu>' : select.data.custom_title }}</td>
                                     <td v-else>žádné</td>
                                 </tr>
                                 <tr>
@@ -192,14 +241,14 @@ export default {
                                     <div class="col">
                                         <template v-if="select.data.type == 'CHANGE'">
                                             <label class="form-label">Změna učebny</label>
-                                            <input type="text" class="form-control mb-3" placeholder="Označení učebny">
+                                            <input type="text" class="form-control mb-3" placeholder="Učebna" v-model="select.data.new_room">
                                             <label class="form-label">Změna učitele</label>
-                                            <select class="form-select mb-3" v-model="select.data.new_teacher">
+                                            <select class="form-select mb-3" v-model="select.data.new_teacher_id">
                                                 <option></option>
                                                 <option v-for="teacher in teachers" :value="teacher.id">{{ teacher.first_name+' '+teacher.last_name }}</option>
                                             </select>
                                             <label class="form-label">Změna předmětu</label>
-                                            <select class="form-select" v-model="select.data.new_subject">
+                                            <select class="form-select" v-model="select.data.new_subject_id">
                                                 <option></option>
                                                 <option v-for="subject in subjects" :value="subject.id">{{ subject.name }}</option>
                                             </select>
@@ -211,8 +260,10 @@ export default {
                                     </div>
                                 </div>
                                 <label class="form-label">Doplňující informace (volitelné)</label>
-                                <input type="text" class="form-control" placeholder="Bližší informace" v-model="select.data.information"> 
-                                <button class="btn  btn-primary mt-3" v-on:click="addSubstitution">Uložit změny</button>
+                                <input type="text" class="form-control" placeholder="Bližší informace" v-model="select.data.information">
+                                <button class="btn btn-primary mt-3" v-on:click="addSubstitution" v-if="select.data.substitution_id == null">Přidat změny</button>
+                                <button class="btn btn-primary mt-3" v-on:click="editSubstitution" v-else>Uložit změny</button>
+                                <button class="btn btn-link mt-3" v-on:click="removeSubstitution" v-if="select.data.substitution_id != null">Smazat</button>
                             </div>
                         </div>
                     </div>
@@ -261,11 +312,30 @@ export default {
                                 <div class="p-2">
                                     <div class="row">
                                         <div class="col text-start" v-if="user.role == 1">{{ value[x-1].class }}</div>
-                                        <div class="col text-start" v-else>{{ value[x-1].last_name.slice(0, 2) }}</div>
-                                        <div class="col text-end">{{ value[x-1].classroom }}</div>
+                                        <div class="col text-start" v-else>
+                                            <template v-if="value[x-1].new_teacher_name != null">
+                                                <b>{{ getTeacherAbbr(value[x-1].new_teacher_name) }}</b>
+                                            </template>
+                                            <template v-else>
+                                                {{ getTeacherAbbr(value[x-1].teacher_name) }}
+                                            </template>
+                                        </div>
+                                        <div class="col text-end">
+                                            <template v-if="value[x-1].new_room != null">
+                                                <b>{{ value[x-1].new_room }}</b>
+                                            </template>
+                                            <template v-else>
+                                                {{ value[x-1].room }}
+                                            </template>
+                                        </div>
                                     </div>
                                     <div class="text-center">
-                                        <h5>{{ value[x-1].subject_abbr }}</h5>
+                                        <template v-if="value[x-1].new_subject_abbr != null">
+                                            <h5><s>{{ value[x-1].subject_abbr }}</s> <b>{{ value[x-1].new_subject_abbr }}</b></h5>
+                                        </template>
+                                        <template v-else>
+                                            <h5>{{ value[x-1].subject_abbr }}</h5>
+                                        </template>
                                     </div>
                                     <div class="row">
                                         <small class="col text-center" v-if="value[x-1].type == 'CANCELLED'">odpadá</small>

@@ -1,5 +1,7 @@
 <script>
 import NavbarComponent from '../../components/NavbarComponent.vue';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 export default {
     props: ['user'],
@@ -13,12 +15,12 @@ export default {
             select: {
                 row: null,
                 col: null,
+                date: null,
                 data: null
             },
             teachers: null,
             subjects: null,
-            openModal: false,
-            currentDate: null
+            openModal: false
         }
     },
     methods: {
@@ -33,7 +35,10 @@ export default {
         },
         getSchedule() {
             const self = this;
-            fetch("http://localhost:8080/api/getSchedule", {
+            let url = "http://localhost:8080/api/getSchedule";
+            if(this.select.date != null) url += "/"+this.dateFormat;
+
+            fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -141,12 +146,27 @@ export default {
             return value[1].slice(0, 2);
         }
     },
+    computed: {
+        dateFormat() {
+            var d = new Date(this.select.date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2) 
+                month = '0' + month;
+            if (day.length < 2) 
+                day = '0' + day;
+
+            return [year, month, day].join('-');
+        }
+    },
     mounted() {
         this.getSchedule();
         this.getTeachers();
         this.getSubjects();
     },
-    components: { NavbarComponent }
+    components: { NavbarComponent, VueDatePicker }
 }
 </script>
 
@@ -165,6 +185,8 @@ export default {
             {{ (select.row == null) ? 'žádné' : select.row }}
             {{ (select.col == null) ? 'žádné' : select.col }}
         </p>-->
+
+        <VueDatePicker v-if="user.role == 2" v-model="select.date" locale="cs" :enable-time-picker="false" :disabled-week-days="[6, 0]" :format="dateFormat"></VueDatePicker>
 
         <button ref="btn" data-bs-toggle="modal" data-bs-target="#substitution" hidden></button>
         <div class="modal fade" id="substitution" tabindex="-1" aria-labelledby="substitutionLabel" aria-hidden="true"

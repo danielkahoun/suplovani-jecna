@@ -116,7 +116,6 @@ app.get('/api/getSchedule', function(req, res) {
         let query = "";
         if(data.role == 2) {
             // admin
-            //query = "SELECT lessons.*, subjects.name AS subject, subjects.abbr AS subject_abbr, classes.name AS class, users.first_name, users.last_name FROM lessons INNER JOIN subjects ON subjects.id = lessons.subject_id INNER JOIN classes ON classes.id = lessons.class_id INNER JOIN users ON users.id = lessons.teacher_id WHERE day = " + mysql.escape(new Date().getDay()) + " ORDER BY day, hour ASC";
             query = "SELECT * FROM schedule WHERE day = " + mysql.escape(new Date().getDay());
         }else if(data.role == 1) {
             // teachers
@@ -142,6 +141,30 @@ app.get('/api/getSchedule', function(req, res) {
                     }else {
                         aggObj[child.day] = [child];
                     }
+                }
+                return aggObj
+            }, {})
+
+            res.writeHead(200, { "Content-type": "application/json" });
+            res.end(JSON.stringify(groupedData));
+        });
+    });
+});
+
+app.get('/api/getSchedule/:date', function(req, res) {
+    getUserDetails(req.headers.authorization, function(err, data) {
+        if(err) return res.status(500).end();
+
+        let query = "SELECT * FROM schedule WHERE date = " + mysql.escape(req.params.date);
+
+        con.query(query, function (err, result) {
+            if (err) throw err;
+
+            const groupedData = result.reduce((aggObj, child) => {
+                if(aggObj.hasOwnProperty(child.class)){
+                    aggObj[child.class].push(child);
+                }else {
+                    aggObj[child.class] = [child];
                 }
                 return aggObj
             }, {})

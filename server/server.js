@@ -24,9 +24,14 @@ app.use(express.json());
 
 /** Databáze */
 var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    database: "jecnasuplovani"
+    user: process.env.DB_USER,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASS,
+    host: process.env.DB_HOST,
+    ssl: {
+        ca: fs.readFileSync(__dirname + '/ca-certificate.crt'),
+        rejectUnauthorized: false
+    }
 });
 
 con.connect(function(err) {

@@ -19,7 +19,7 @@ app.use(cors({
     }
 }));
 
-app.use('/assets', express.static('../client/dist/assets'));
+app.use('/assets', express.static('./client/dist/assets'));
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json());
 
@@ -87,7 +87,7 @@ function getUserDetails(token, callback) {
 
 app.get(['/','/login','/prehled','/uzivatele'], (req, res) => {
     res.writeHead(200, { "Content-type": "text/html" });
-    res.end(fs.readFileSync("../client/dist/index.html"));
+    res.end(fs.readFileSync("./client/dist/index.html"));
 });
 
 /** API Routes */

@@ -1,9 +1,9 @@
-FROM node:16 AS client-build
+FROM node:10 AS client-build
 WORKDIR /usr/src/app
 COPY client/ ./client/
 RUN cd client && npm install && npm run build
 
-FROM node:16 AS server-build
+FROM node:10 AS server-build
 WORKDIR /root/
 COPY --from=client-build /usr/src/app/client/dist ./client/dist
 COPY server/package*.json ./server/

@@ -4,7 +4,8 @@ const crypto = require('crypto')
 const cors = require('cors');
 const mysql = require('mysql');
 const app = module.exports = express()
-const port = 8080
+const hostname = 'localhost';
+const port = 3000;
 
 const allowedOrigins = ['*'];
 app.use(cors({
@@ -263,6 +264,6 @@ app.delete('/api/deleteUser/:id', isAdmin, (req, res, next) => {
     });
 });
 
-app.listen(port, () => {
-    console.log(`App is ready at http://127.0.0.1:${port}`)
-})
+app.listen(port, hostname, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
+});

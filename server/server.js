@@ -7,7 +7,7 @@ const app = module.exports = express()
 const hostname = '0.0.0.0';
 const port = process.env.PORT || 3000;
 
-const allowedOrigins = ['*'];
+const allowedOrigins = [process.env.APP_URL, process.env.APP_URL + ':3000', process.env.APP_URL + ':8080'];
 app.use(cors({
     origin: function (origin, callback) {
         if (!origin) return callback(null, true);

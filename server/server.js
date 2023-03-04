@@ -4,8 +4,8 @@ const crypto = require('crypto')
 const cors = require('cors');
 const mysql = require('mysql');
 const app = module.exports = express()
-const hostname = 'localhost';
-const port = 3000;
+const hostname = '0.0.0.0';
+const port = process.env.PORT || 3000;
 
 const allowedOrigins = ['*'];
 app.use(cors({

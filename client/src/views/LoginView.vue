@@ -14,7 +14,7 @@ export default {
         login() {
             (async () => {
                 const self = this;
-                fetch('http://localhost:8080/api/login', {
+                fetch('/api/login', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',

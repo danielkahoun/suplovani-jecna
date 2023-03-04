@@ -19,7 +19,7 @@ export default {
     methods: {
         getUsers() {
             const self = this;
-            fetch("http://localhost:8080/api/getUsers", {
+            fetch("/api/getUsers", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ export default {
         },
         getClasses() {
             const self = this;
-            fetch("http://localhost:8080/api/getClasses", {
+            fetch("/api/getClasses", {
                 method: 'GET',
             })
             .then(function (response) {
@@ -47,7 +47,7 @@ export default {
         },
         addUser() {
             const self = this;
-            fetch("http://localhost:8080/api/addUser", {
+            fetch("/api/addUser", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ export default {
         },
         deleteUser(id) {
             const self = this;
-            fetch("http://localhost:8080/api/deleteUser/"+id, {
+            fetch("/api/deleteUser/"+id, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

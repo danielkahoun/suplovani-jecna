@@ -6,7 +6,7 @@ const mysql = require('mysql');
 const app = module.exports = express()
 const port = 8080
 
-const allowedOrigins = ['http://127.0.0.1:5173','http://localhost:5173','http://localhost:8080','http://127.0.0.1:8080','http://localhost'];
+const allowedOrigins = ['*'];
 app.use(cors({
     origin: function (origin, callback) {
         if (!origin) return callback(null, true);

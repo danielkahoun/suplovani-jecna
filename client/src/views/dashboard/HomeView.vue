@@ -35,7 +35,7 @@ export default {
         },
         getSchedule() {
             const self = this;
-            let url = "http://localhost:8080/api/getSchedule";
+            let url = "/api/getSchedule";
             if(this.select.date != null) url += "/"+this.dateFormat;
 
             fetch(url, {
@@ -54,7 +54,7 @@ export default {
         },
         getTeachers() {
             const self = this;
-            fetch("http://localhost:8080/api/getTeachers", {
+            fetch("/api/getTeachers", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ export default {
         },
         getSubjects() {
             const self = this;
-            fetch("http://localhost:8080/api/getSubjects", {
+            fetch("/api/getSubjects", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ export default {
         },
         addSubstitution() {
             const self = this;
-            fetch("http://localhost:8080/api/addSubstitution", {
+            fetch("/api/addSubstitution", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ export default {
         },
         editSubstitution() {
             const self = this;
-            fetch("http://localhost:8080/api/editSubstitution", {
+            fetch("/api/editSubstitution", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ export default {
         },
         removeSubstitution() {
             const self = this;
-            fetch("http://localhost:8080/api/removeSubstitution", {
+            fetch("/api/removeSubstitution", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

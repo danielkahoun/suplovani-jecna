@@ -10,7 +10,7 @@ export default {
     methods: {
         getProfile() {
             const self = this;
-            fetch("http://localhost:8080/api/getProfile", {
+            fetch("/api/getProfile", {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',

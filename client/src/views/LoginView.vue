@@ -6,8 +6,8 @@ export default {
                 type: null,
                 content: null
             },
-            username: "admin",
-            password: "admin123"
+            username: "",
+            password: ""
         }
     },
     methods: {

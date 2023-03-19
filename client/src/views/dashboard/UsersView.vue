@@ -19,7 +19,7 @@ export default {
     methods: {
         getUsers() {
             const self = this;
-            fetch("/api/getUsers", {
+            fetch(import.meta.env.VITE_URL+"api/getUsers", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ export default {
         },
         getClasses() {
             const self = this;
-            fetch("/api/getClasses", {
+            fetch(import.meta.env.VITE_URL+"api/getClasses", {
                 method: 'GET',
             })
             .then(function (response) {
@@ -47,7 +47,7 @@ export default {
         },
         addUser() {
             const self = this;
-            fetch("/api/addUser", {
+            fetch(import.meta.env.VITE_URL+"api/addUser", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ export default {
         },
         deleteUser(id) {
             const self = this;
-            fetch("/api/deleteUser/"+id, {
+            fetch(import.meta.env.VITE_URL+"api/deleteUser/"+id, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

@@ -4,22 +4,12 @@ const crypto = require('crypto')
 const cors = require('cors');
 const mysql = require('mysql');
 const app = module.exports = express()
-const hostname = '0.0.0.0';
+
+const hostname = process.env.HOSTNAME || '0.0.0.0';
 const port = process.env.PORT || 3000;
 
-const allowedOrigins = [process.env.APP_URL, process.env.APP_URL + ':3000', process.env.APP_URL + ':8080'];
-app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) === -1) {
-            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-            return callback(new Error(msg), false);
-        }
-        return callback(null, true);
-    }
-}));
-
-app.use('/assets', express.static('./client/dist/assets'));
+app.use(cors());
+app.use('/assets', express.static('../client/dist/assets'));
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json());
 
@@ -87,7 +77,7 @@ function getUserDetails(token, callback) {
 
 app.get(['/','/login','/prehled','/uzivatele'], (req, res) => {
     res.writeHead(200, { "Content-type": "text/html" });
-    res.end(fs.readFileSync("./client/dist/index.html"));
+    res.end(fs.readFileSync("../client/dist/index.html"));
 });
 
 /** API Routes */

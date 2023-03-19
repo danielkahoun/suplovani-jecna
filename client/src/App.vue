@@ -10,7 +10,7 @@ export default {
     methods: {
         getProfile() {
             const self = this;
-            fetch("/api/getProfile", {
+            fetch(import.meta.env.VITE_URL+"api/getProfile", {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',

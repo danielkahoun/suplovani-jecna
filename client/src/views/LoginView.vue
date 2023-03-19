@@ -14,7 +14,7 @@ export default {
         login() {
             (async () => {
                 const self = this;
-                fetch('/api/login', {
+                fetch(import.meta.env.VITE_URL+"api/login", {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',

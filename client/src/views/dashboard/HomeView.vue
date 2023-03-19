@@ -35,7 +35,7 @@ export default {
         },
         getSchedule() {
             const self = this;
-            let url = "/api/getSchedule";
+            let url = import.meta.env.VITE_URL+"api/getSchedule";
             if(this.select.date != null) url += "/"+this.dateFormat;
 
             fetch(url, {
@@ -54,7 +54,7 @@ export default {
         },
         getTeachers() {
             const self = this;
-            fetch("/api/getTeachers", {
+            fetch(import.meta.env.VITE_URL+"api/getTeachers", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ export default {
         },
         getSubjects() {
             const self = this;
-            fetch("/api/getSubjects", {
+            fetch(import.meta.env.VITE_URL+"api/getSubjects", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ export default {
         },
         addSubstitution() {
             const self = this;
-            fetch("/api/addSubstitution", {
+            fetch(import.meta.env.VITE_URL+"api/addSubstitution", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ export default {
         },
         editSubstitution() {
             const self = this;
-            fetch("/api/editSubstitution", {
+            fetch(import.meta.env.VITE_URL+"api/editSubstitution", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ export default {
         },
         removeSubstitution() {
             const self = this;
-            fetch("/api/removeSubstitution", {
+            fetch(import.meta.env.VITE_URL+"api/removeSubstitution", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

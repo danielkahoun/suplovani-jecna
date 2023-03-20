@@ -41,18 +41,11 @@
                 <p class="text-gray-600">Rozvrh a změny v něm si lze zobrazit např. v Google kalendáři bez nutnosti navštěvovat web.</p>
             </div>
         </div>
-        <div class="text-center my-24">
-            <h1 class="font-light text-xl uppercase">Zvolený Tech Stack</h1>
-            <h2 class="font-medium text-xl">Vue.js, Bootstrap a express.js</h2>
-        </div>
-
-
-
 
         <div class="flex flex-col md:flex-row items-center gap-4 mt-4">
             <div class="w-full p-5">
                 <div class="bg-gray-200 aspect-[3/2] relative">
-                    <img class="absolute top-12 left-12" src="https://picsum.photos/1920/1280">
+                    <img class="absolute top-12 left-12" src="/src/assets/placeholder.png">
                 </div>
             </div>
             <div class="w-full p-5">
@@ -71,7 +64,7 @@
             </div>
             <div class="w-full p-5">
                 <div class="bg-gray-200 aspect-[3/2] relative">
-                    <img class="absolute top-12 right-12" src="https://picsum.photos/1920/1280">
+                    <img class="absolute top-12 right-12" src="/src/assets/placeholder.png">
                 </div>
             </div>
         </div>
@@ -82,7 +75,7 @@
         <div class="flex flex-col md:flex-row items-center gap-4 mt-4">
             <div class="w-full p-5">
                 <div class="bg-gray-200 aspect-[3/2] relative">
-                    <img class="absolute top-12 left-12" src="https://picsum.photos/1920/1280">
+                    <img class="absolute top-12 left-12" src="/src/assets/placeholder.png">
                 </div>
             </div>
             <div class="w-full p-5">
@@ -91,9 +84,10 @@
             </div>
         </div>
 
-
-
-        <div class="mt-28"></div>
+        <div class="text-center my-24">
+            <h1 class="font-light text-xl uppercase">Zvolený Tech Stack</h1>
+            <h2 class="font-medium text-xl">Vue.js, Bootstrap a express.js</h2>
+        </div>
 
     </div>
 </template>

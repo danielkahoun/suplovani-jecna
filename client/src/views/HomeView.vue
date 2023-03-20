@@ -52,7 +52,7 @@
         <div class="flex flex-col md:flex-row items-center gap-4 mt-4">
             <div class="w-full p-5">
                 <div class="bg-gray-200 aspect-[3/2] relative">
-                    <img class="absolute top-12 left-12" src="https://images.unsplash.com/photo-1600623471616-8c1966c91ff6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80">
+                    <img class="absolute top-12 left-12" src="https://picsum.photos/1920/1280">
                 </div>
             </div>
             <div class="w-full p-5">
@@ -71,7 +71,7 @@
             </div>
             <div class="w-full p-5">
                 <div class="bg-gray-200 aspect-[3/2] relative">
-                    <img class="absolute top-12 right-12" src="https://images.unsplash.com/photo-1600623471616-8c1966c91ff6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80">
+                    <img class="absolute top-12 right-12" src="https://picsum.photos/1920/1280">
                 </div>
             </div>
         </div>
@@ -82,7 +82,7 @@
         <div class="flex flex-col md:flex-row items-center gap-4 mt-4">
             <div class="w-full p-5">
                 <div class="bg-gray-200 aspect-[3/2] relative">
-                    <img class="absolute top-12 left-12" src="https://images.unsplash.com/photo-1600623471616-8c1966c91ff6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80">
+                    <img class="absolute top-12 left-12" src="https://picsum.photos/1920/1280">
                 </div>
             </div>
             <div class="w-full p-5">

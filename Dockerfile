@@ -5,11 +5,11 @@ RUN cd client && npm install && npm run build
 
 FROM node:16 AS server-build
 WORKDIR /root/
-COPY --from=client-build /usr/src/app/client/dist ./client/dist
-COPY server/package*.json ./server/
+COPY --from=client-build /usr/src/app/client/dist ./app/client/dist
+COPY server/package*.json ./app/server/
 RUN cd server && npm install
-COPY server/server.js ./server/
-COPY server/ca-certificate.crt ./server/
+COPY server/server.js ./app/server/
+COPY server/ca-certificate.crt ./app/server/
 
 EXPOSE 3080
 

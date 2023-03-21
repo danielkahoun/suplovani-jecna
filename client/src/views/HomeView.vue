@@ -42,6 +42,7 @@
             </div>
         </div>
 
+        <!--
         <div class="flex flex-col md:flex-row items-center gap-4 mt-4">
             <div class="w-full p-5">
                 <div class="bg-gray-200 aspect-[3/2] relative">
@@ -82,7 +83,7 @@
                 <h3 class="text-gray-800 text-xl font-medium mt-2">Integrace s kalendáři</h3>
                 <p class="text-gray-600">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto quo, nesciunt esse nulla animi illo repellat aspernatur voluptatum aut accusantium.</p>
             </div>
-        </div>
+        </div>-->
 
         <div class="text-center my-24">
             <h1 class="font-light text-xl uppercase">Zvolený Tech Stack</h1>

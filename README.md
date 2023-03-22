@@ -12,4 +12,14 @@ Jednoduchý systém pro suplování na škole. Webová aplikace poskytuje přehl
 - celoškolní přehled pro tvořitele
 - dodatečné informace o suplování po rozkliknutí hodiny
 - správa uživatelů (vytváření a mazání)
-- propojení s Google Kalendářem
+- propojení s Google Kalendářem 
+
+## Pokyny pro spuštění aplikace 
+### požadavky 
+- MySQL server 
+- Node.js 
+- Docker
+
+### spuštění aplikace ve vývojářské verzi (bez Dockeru)
+
+```#~/client npm install``` 

@@ -48,7 +48,7 @@ node .
 
 ```docker build -t jecna-suplovani .```
 
-ve složce projektu vytvoříme soubor **.env** a v něm nastavíme následující parametry:
+ve složce projektu vytvoříme soubor ```.env``` a v něm nastavíme následující parametry:
 
 ```
 HOSTNAME=localhost

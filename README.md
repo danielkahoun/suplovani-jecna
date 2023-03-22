@@ -23,3 +23,21 @@ Jednoduchý systém pro suplování na škole. Webová aplikace poskytuje přehl
 ### spuštění aplikace ve vývojářské verzi (bez Dockeru)
 
 ```#~/client npm install``` 
+
+```#~/client npm run dev```
+
+```#~/server npm install```
+
+```#~/server node .```
+
+**spuštění backend serveru:** 
+(na Windows zařízeních je nutné spouštět server skrze git bash či Linux subsystem)
+
+```#~/server
+HOSTNAME=localhost
+DB_USER=<UZIVATEL>
+DB_NAME=<NAZEV_DATABAZE>
+DB_PASS=<HESLO>
+DB_HOST=<ADRESA_DATABAZE>
+DB_PORT=<PORT_DATABAZE>
+node .```

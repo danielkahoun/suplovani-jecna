@@ -20,6 +20,10 @@ Jednoduchý systém pro suplování na škole. Webová aplikace poskytuje přehl
 - Node.js 
 - Docker
 
+### vložení databáze
+
+Do MySQL serveru je nutné naimportovat databázi z přiloženého souboru ```export.sql```
+
 ### spuštění aplikace ve vývojářské verzi (bez Dockeru)
 
 ```#~/client npm install``` 

@@ -32,6 +32,7 @@ export default {
         getSelected() {
             let row = JSON.parse(JSON.stringify(this.schedule[this.select.row]));
             this.select.data = row[this.select.col];
+            this.select.data.date = this.dateFormat;
         },
         getSchedule() {
             const self = this;
@@ -159,6 +160,11 @@ export default {
                 day = '0' + day;
 
             return [year, month, day].join('-');
+        }
+    },
+    watch: {
+        'select.date'(newValue) {
+            this.getSchedule();
         }
     },
     mounted() {

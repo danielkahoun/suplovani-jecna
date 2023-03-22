@@ -152,7 +152,8 @@ app.get('/api/getSchedule/:date', function(req, res) {
     getUserDetails(req.headers.authorization, function(err, data) {
         if(err) return res.status(500).end();
 
-        let query = "SELECT * FROM schedule WHERE date = " + mysql.escape(req.params.date);
+        let date = new Date(req.params.date);
+        let query = 'select "lessons"."id" AS "id","substitutions"."id" AS "substitution_id","lessons"."subject_id" AS "subject_id","lessons"."teacher_id" AS "teacher_id","lessons"."class_id" AS "class_id","substitutions"."date" AS "date","lessons"."day" AS "day","lessons"."hour" AS "hour","subjects"."name" AS "subject_name","subjects"."abbr" AS "subject_abbr","classes"."name" AS "class",concat("users"."first_name",\' \',"users"."last_name") AS "teacher_name","lessons"."room" AS "room","substitutions"."type" AS "type","substitutions"."new_subject_id" AS "new_subject_id",(select "subjects"."name" from "subjects" where ("subjects"."id" = "substitutions"."new_subject_id")) AS "new_subject_name",(select "subjects"."abbr" from "subjects" where ("subjects"."id" = "substitutions"."new_subject_id")) AS "new_subject_abbr","substitutions"."new_teacher_id" AS "new_teacher_id",(select concat("users"."first_name",\' \',"users"."last_name") from "users" where ("users"."id" = "substitutions"."new_teacher_id")) AS "new_teacher_name","substitutions"."new_room" AS "new_room","substitutions"."custom_title" AS "custom_title","substitutions"."information" AS "information" from (((("lessons" left join "substitutions" on(((("substitutions"."lesson_id" = "lessons"."id") and ("substitutions"."date" = '+mysql.escape(req.params.date)+')) or ("substitutions"."date" is null)))) join "subjects" on(("subjects"."id" = "lessons"."subject_id"))) join "classes" on(("classes"."id" = "lessons"."class_id"))) join "users" on(("users"."id" = "lessons"."teacher_id"))) where day = '+mysql.escape(date.getDay())+' order by "lessons"."day","lessons"."hour"';
 
         con.query(query, function (err, result) {
             if (err) throw err;
@@ -209,7 +210,7 @@ app.get('/api/getUsers', isAdmin, (req, res, next) => {
 });
 
 app.post('/api/addSubstitution', isAdmin, (req, res, next) => {
-    con.query("INSERT INTO substitutions(lesson_id, type, date, new_subject_id, new_teacher_id, new_room, custom_title, information) VALUES ("+mysql.escape(req.body.id)+","+mysql.escape(req.body.type)+","+mysql.escape(new Date().toJSON().slice(0, 10))+","+mysql.escape(req.body.new_subject_id)+","+mysql.escape(req.body.new_teacher_id)+","+mysql.escape(req.body.new_room)+","+mysql.escape(req.body.custom_title)+","+mysql.escape(req.body.information)+")", function (err, result) {
+    con.query("INSERT INTO substitutions(lesson_id, type, date, new_subject_id, new_teacher_id, new_room, custom_title, information) VALUES ("+mysql.escape(req.body.id)+","+mysql.escape(req.body.type)+","+mysql.escape(req.body.date)+","+mysql.escape(req.body.new_subject_id)+","+mysql.escape(req.body.new_teacher_id)+","+mysql.escape(req.body.new_room)+","+mysql.escape(req.body.custom_title)+","+mysql.escape(req.body.information)+")", function (err, result) {
         if(err) return res.status(500).end();
 
         res.writeHead(200, { "Content-type": "application/json" });

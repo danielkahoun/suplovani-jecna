@@ -33,14 +33,16 @@ Jednoduchý systém pro suplování na škole. Webová aplikace poskytuje přehl
 **spuštění backend serveru:** 
 (na Windows zařízeních je nutné spouštět server skrze git bash či Linux subsystem)
 
-```#~/server
+```
+#~/server
 HOSTNAME=localhost
 DB_USER=<UZIVATEL>
 DB_NAME=<NAZEV_DATABAZE>
 DB_PASS=<HESLO>
 DB_HOST=<ADRESA_DATABAZE>
 DB_PORT=<PORT_DATABAZE>
-node .```
+node .
+```
 
 ### spuštění aplikace v produkční verzi prostřednictvím Dockeru 
 

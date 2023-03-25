@@ -152,9 +152,9 @@ app.get('/calendar', (req, res) => {
 
                 let event = {
                     title: groupedData[day][i].subject_name,
-                    start: [date.getFullYear(), date.getMonth()+1, date.getDate(), hour, minutes],
+                    start: [date.getFullYear(), date.getMonth()+1, date.getDate(), hour-1, minutes],
                     duration: { minutes: 45 },
-                    recurrenceRule: 'FREQ=WEEKLY;BYDAY=MO;INTERVAL=1'
+                    recurrenceRule: 'FREQ=WEEKLY'
                 }
                 events.push(event);
             }

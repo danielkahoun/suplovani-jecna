@@ -150,13 +150,21 @@ app.get('/calendar', (req, res) => {
                         break;
                 }
 
+                let eventTitle;
+                if(groupedData[day][i].type == 'CHANGE') {
+                    eventTitle = 'Suplování: ' + (groupedData[day][i].new_subject_name != null) ? groupedData[day][i].new_subject_name : groupedData[day][i].subject_name;
+                }else if(groupedData[day][i].type == 'CANCELLED') {
+                    eventTitle = 'Zrušeno: '+groupedData[day][i].subject_name;
+                }else {
+                    eventTitle = groupedData[day][i].subject_name;
+                }
+
                 let event = {
-                    title: groupedData[day][i].subject_name,
+                    title: eventTitle,
                     start: [date.getFullYear(), date.getMonth()+1, date.getDate(), hour-1, minutes],
                     duration: { minutes: 45 },
-                    description: groupedData[day][i].teacher_name,
-                    location: 'učebna č. '+groupedData[day][i].classroom,
-                    status: (groupedData[day][i].type == 'CANCELLED' ? 'CANCELLED' : 'CONFIRMED'),
+                    description: (groupedData[day][i].new_teacher != null) ? 'Vyučující: '+groupedData[day][i].new_teacher : groupedData[day][i].teacher,
+                    location: 'učebna č. '+ (groupedData[day][i].new_room != null) ? groupedData[day][i].new_room : groupedData[day][i].room,
                     recurrenceRule: 'FREQ=WEEKLY'
                 }
                 events.push(event);

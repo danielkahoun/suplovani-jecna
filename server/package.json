@@ -11,9 +11,10 @@
     "cors": "^2.8.5",
     "express": "^4.16.1",
     "express-session": "^1.17.3",
+    "ics": "^3.1.0",
     "mysql": "^2.18.1"
   },
-  "engines" : { 
-    "node" : "16.0.0" 
+  "engines": {
+    "node": "16.0.0"
   }
 }

@@ -1,6 +1,7 @@
 const express = require('express')
 const fs = require('fs')
 const crypto = require('crypto')
+const ics = require('ics')
 const cors = require('cors');
 const mysql = require('mysql');
 const app = module.exports = express()
@@ -78,6 +79,92 @@ function getUserDetails(token, callback) {
 app.get(['/','/login','/prehled','/uzivatele'], (req, res) => {
     res.writeHead(200, { "Content-type": "text/html" });
     res.end(fs.readFileSync(__dirname+"/../client/dist/index.html"));
+});
+
+/** Calendar */
+
+app.get('/calendar', (req, res) => {
+    con.query("SELECT * FROM schedule", function (err, result) {
+        if (err) throw err;
+
+        const groupedData = result.reduce((aggObj, child) => {
+            if(aggObj.hasOwnProperty(child.day)){
+                aggObj[child.day].push(child);
+            }else {
+                aggObj[child.day] = [child];
+            }
+            return aggObj
+        }, {})
+
+        let events = [];
+        for(let day in groupedData) {
+            let date = new Date()
+            date.setDate(date.getDate() - (date.getDay() == day ? 7 : (date.getDay() + (7 - day)) % 7))
+
+            for(let i = 0; i < groupedData[day].length; i++) {
+                let hour;
+                let minutes;
+
+                switch(groupedData[day][i].hour) {
+                    case 1:
+                        hour = 7;
+                        minutes = 30;
+                        break;
+                    case 2:
+                        hour = 8;
+                        minutes = 25;
+                        break;
+                    case 3:
+                        hour = 9;
+                        minutes = 20;
+                        break;
+                    case 4:
+                        hour = 10;
+                        minutes = 20;
+                        break;
+                    case 5:
+                        hour = 11;
+                        minutes = 15;
+                        break;
+                    case 6:
+                        hour = 12;
+                        minutes = 10;
+                        break;
+                    case 7:
+                        hour = 13;
+                        minutes = 5;
+                        break;
+                    case 8:
+                        hour = 14;
+                        minutes = 0;
+                        break;
+                    case 9:
+                        hour = 14;
+                        minutes = 55;
+                        break;
+                    case 10:
+                        hour = 15;
+                        minutes = 50;
+                        break;
+                    default:
+                        break;
+                }
+
+                let event = {
+                    title: groupedData[day][i].subject_name,
+                    start: [date.getFullYear(), date.getMonth()+1, date.getDate(), hour, minutes],
+                    duration: { minutes: 45 },
+                    recurrenceRule: 'FREQ=WEEKLY;BYDAY=MO;INTERVAL=1'
+                }
+                events.push(event);
+            }
+        }
+
+        const { value } = ics.createEvents(events)
+        
+        res.writeHead(200, { "Content-type": "text/plain;charset=utf-8" });
+        res.end(value);
+    });
 });
 
 /** API Routes */

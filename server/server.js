@@ -154,6 +154,9 @@ app.get('/calendar', (req, res) => {
                     title: groupedData[day][i].subject_name,
                     start: [date.getFullYear(), date.getMonth()+1, date.getDate(), hour-1, minutes],
                     duration: { minutes: 45 },
+                    description: groupedData[day][i].teacher_name,
+                    location: 'učebna č. '+groupedData[day][i].classroom,
+                    status: (groupedData[day][i].type == 'CANCELLED' ? 'CANCELLED' : 'CONFIRMED'),
                     recurrenceRule: 'FREQ=WEEKLY'
                 }
                 events.push(event);

@@ -159,12 +159,26 @@ app.get('/calendar', (req, res) => {
                     eventTitle = groupedData[day][i].subject_name;
                 }
 
+                let eventLocation;
+                if(groupedData[day][i].new_room != null) {
+                    eventLocation = 'učebna č. '+groupedData[day][i].new_room;
+                }else {
+                    eventLocation = 'učebna č. '+groupedData[day][i].room;
+                }
+
+                let eventDescription;
+                if(groupedData[day][i].new_teacher_name != null) {
+                    eventDescription = 'Náhradní vyučující: '+groupedData[day][i].new_teacher_name;
+                }else {
+                    eventDescription = 'Vyučující: '+groupedData[day][i].teacher_name;
+                }
+
                 let event = {
                     title: eventTitle,
                     start: [date.getFullYear(), date.getMonth()+1, date.getDate(), hour-1, minutes],
                     duration: { minutes: 45 },
-                    description: (groupedData[day][i].new_teacher != null) ? 'Vyučující: '+groupedData[day][i].new_teacher : groupedData[day][i].teacher,
-                    location: 'učebna č. '+ (groupedData[day][i].new_room != null) ? groupedData[day][i].new_room : groupedData[day][i].room,
+                    description: eventDescription,
+                    location: eventLocation,
                     recurrenceRule: 'FREQ=WEEKLY'
                 }
                 events.push(event);
@@ -175,6 +189,7 @@ app.get('/calendar', (req, res) => {
         
         res.writeHead(200, { "Content-type": "text/plain;charset=utf-8" });
         res.end(value);
+        console.log(events);
     });
 });
 

@@ -42,7 +42,7 @@
             </div>
         </div>
 
-        <!--
+        
         <div class="flex flex-col md:flex-row items-center gap-4 mt-4">
             <div class="w-full p-5">
                 <div class="bg-gray-200 aspect-[3/2] relative">
@@ -51,7 +51,7 @@
             </div>
             <div class="w-full p-5">
                 <h3 class="text-gray-800 text-xl font-medium mt-2">Podrobnosti o předmětu a suplování</h3>
-                <p class="text-gray-600">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto quo, nesciunt esse nulla animi illo repellat aspernatur voluptatum aut accusantium.</p>
+                <p class="text-gray-600">Více informací o předmětu lze zjistit po rozkliknutí hodiny v rozvrhu. Dozvědět se lze také informace o případném suplování, změny učebny či jiných změnách v rozvrhu (např. o zrušených hodinách).</p>
             </div>
         </div>
 
@@ -61,7 +61,7 @@
         <div class="flex flex-col md:flex-row items-center gap-4 mt-4">
             <div class="w-full p-5">
                 <h3 class="text-gray-800 text-xl font-medium mt-2">Snadná úprava rozvrhu</h3>
-                <p class="text-gray-600">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto quo, nesciunt esse nulla animi illo repellat aspernatur voluptatum aut accusantium.</p>
+                <p class="text-gray-600" Administrátor (tvořitel suplování) má k dispozici intuitivní uživatelské rozhrání, ve kterém je možnost zvolit konkrétní datum rozvrhu všech tříd a po rozkliknutí hodiny může provádět změny.</p>
             </div>
             <div class="w-full p-5">
                 <div class="bg-gray-200 aspect-[3/2] relative">
@@ -81,9 +81,9 @@
             </div>
             <div class="w-full p-5">
                 <h3 class="text-gray-800 text-xl font-medium mt-2">Integrace s kalendáři</h3>
-                <p class="text-gray-600">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto quo, nesciunt esse nulla animi illo repellat aspernatur voluptatum aut accusantium.</p>
+                <p class="text-gray-600" Aplikace umožňuje integraci s běžně dostupnými nástroji pro kalendář, jako je Google či Office kalendář a to prostřednictvím externího odkazu, na kterém se nachází rozvrh v iCal formátu.</p>
             </div>
-        </div>-->
+        </div>
 
         <div class="text-center my-24">
             <h1 class="font-light text-xl uppercase">Zvolený Tech Stack</h1>

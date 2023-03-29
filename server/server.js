@@ -85,7 +85,7 @@ app.get(['/','/login','/prehled','/uzivatele'], (req, res) => {
 /** Calendar */
 
 app.get('/ics/:token', (req, res) => {
-    getUserDetails(req.headers.token, function(err, data) {
+    getUserDetails(req.params.token, function(err, data) {
         if(err) return res.status(500).end();
 
         let query = "";

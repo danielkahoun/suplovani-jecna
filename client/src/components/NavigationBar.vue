@@ -30,6 +30,14 @@ export default {
                 </div>
               </router-link>
             </li>
+            <li v-if="user.role != 2">
+              <router-link to="/nastaveni" class="nav-link text-white">
+                <div class="py-2">
+                  <i class="fa-sharp fa-solid fa-cog fa-lg bi d-block mx-auto mb-1"></i>
+                  Nastavení
+                </div>
+              </router-link>
+            </li>
             <li>
               <router-link to="/login" class="nav-link text-white">
                 <div class="py-2">
@@ -52,8 +60,8 @@ export default {
         </form>
 
         <div class="d-flex align-items-center" style="gap:10px;">
-          <img class="rounded-circle" :src="'https://ui-avatars.com/api/?name='+user.first_name.substring(0, 1)+'+'+user.last_name.substring(0, 1)+'&background=random'" width="43" height="43">
-          <div class="d-block text-start">
+          <!--<img class="rounded-circle" :src="'https://ui-avatars.com/api/?name='+user.first_name.substring(0, 1)+'+'+user.last_name.substring(0, 1)+'&background=random'" width="43" height="43">
+          --><div class="d-block text-start">
             <p class="p-0 m-0">přihlášen jako</p>
             <h6 class="p-0 m-0">{{user.first_name}} {{user.last_name}}</h6>
           </div>

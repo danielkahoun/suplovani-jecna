@@ -1,5 +1,5 @@
 <script>
-import NavbarComponent from '../../components/NavbarComponent.vue';
+import NavigationBar from '../../components/NavigationBar.vue';
 
 export default {
     props: ['user'],
@@ -101,13 +101,13 @@ export default {
         this.getUsers();
         this.getClasses();
     },
-    components: { NavbarComponent }
+    components: { NavigationBar }
 }
 </script>
 
 <template>
 
-    <NavbarComponent :user="user" />
+    <NavigationBar :user="user" />
 
     <div class="container">
         

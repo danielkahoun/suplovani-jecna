@@ -77,7 +77,7 @@ function getUserDetails(token, callback) {
 
 /** Web Routes (via Vue Router) */
 
-app.get(['/','/login','/prehled','/uzivatele'], (req, res) => {
+app.get(['/','/login','/prehled','/uzivatele','/nastaveni'], (req, res) => {
     res.writeHead(200, { "Content-type": "text/html" });
     res.end(fs.readFileSync(__dirname+"/../client/dist/index.html"));
 });

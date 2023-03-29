@@ -7,7 +7,7 @@ export default {
     props: ['user'],
     data() {
         return {
-            calendar_url: window.location.hostname + '/ics/' + this.user.calendar_key
+            calendar_url: window.location.origin + '/ics/' + this.user.calendar_key
         }
     },
     components: { NavigationBar, VueDatePicker }

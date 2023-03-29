@@ -1,5 +1,5 @@
 <script>
-import NavbarComponent from '../../components/NavbarComponent.vue';
+import NavigationBar from '../../components/NavigationBar.vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
@@ -167,33 +167,24 @@ export default {
             this.getSchedule();
         }
     },
+    created() {
+        if(this.user.role == 2) {
+            this.select.date = new Date();
+        }
+    },
     mounted() {
         this.getSchedule();
         this.getTeachers();
         this.getSubjects();
     },
-    components: { NavbarComponent, VueDatePicker }
+    components: { NavigationBar, VueDatePicker }
 }
 </script>
 
 <template>
-    <NavbarComponent :user="user" />
+    <NavigationBar :user="user" />
 
     <div class="container">
-
-        <!--
-        <p>
-            {{ position.x }}
-            {{ position.y }}
-        </p>
-
-        <p>
-            {{ (select.row == null) ? 'žádné' : select.row }}
-            {{ (select.col == null) ? 'žádné' : select.col }}
-        </p>-->
-
-        <VueDatePicker v-if="user.role == 2" v-model="select.date" locale="cs" :enable-time-picker="false" :disabled-week-days="[6, 0]" :format="dateFormat"></VueDatePicker>
-
         <button ref="btn" data-bs-toggle="modal" data-bs-target="#substitution" hidden></button>
         <div class="modal fade" id="substitution" tabindex="-1" aria-labelledby="substitutionLabel" aria-hidden="true"
             v-on:mouseleave="position.x = 0; position.y = 0;">
@@ -300,8 +291,11 @@ export default {
         </div>
 
 
-
+        <div class="float-end">
+            <VueDatePicker v-if="user.role == 2" v-model="select.date" locale="cs" select-text="Vybrat" cancel-text="Zrušit" :enable-time-picker="false" :disabled-week-days="[6, 0]" :format="dateFormat"></VueDatePicker>
+        </div>
         <h3 class="mt-4">Přehled</h3>
+        
         <hr>
         <table class="table table-bordered bg-white">
             <thead class="text-center">

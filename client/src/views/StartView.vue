@@ -5,7 +5,7 @@
                 <span class="font-medium">Suplování Ječná</span>
                 <a href="/login"><button
                         class="bg-gray-800 text-white text-sm font-medium rounded-md hover:shadow-lg py-2 px-4">
-                        Vyzkoušet<i class="fa-sharp fa-solid fa-square-arrow-up-right ml-2"></i></button></a>
+                        Otevřít aplikaci<i class="fa-sharp fa-solid fa-square-arrow-up-right ml-2"></i></button></a>
             </div>
         </nav>
         <div
@@ -55,10 +55,10 @@
                 </p>
             </div>
         </div>
-        <div class="flex flex-col md:flex-row items-center gap-4 mt-4">
+        <div class="flex flex-col md:flex-row items-center gap-24 mt-4">
             <div class="w-full p-5">
                 <div class="bg-gray-200 aspect-[3/2] relative">
-                    <img class="absolute top-12 left-12" src="/src/assets/placeholder.png" />
+                    <img class="absolute top-12 left-12" src="/src/assets/01.png" />
                 </div>
             </div>
             <div class="w-full p-5">
@@ -72,7 +72,7 @@
                 </p>
             </div>
         </div>
-        <div class="flex flex-col md:flex-row items-center gap-4 mt-4">
+        <div class="flex flex-col md:flex-row items-center gap-24 mt-4">
             <div class="w-full p-5">
                 <h3 class="text-gray-800 text-xl font-medium mt-2">
                     Snadná úprava rozvrhu
@@ -85,14 +85,14 @@
             </div>
             <div class="w-full p-5">
                 <div class="bg-gray-200 aspect-[3/2] relative">
-                    <img class="absolute top-12 right-12" src="/src/assets/placeholder.png" />
+                    <img class="absolute top-12 right-12" src="/src/assets/02.png" />
                 </div>
             </div>
         </div>
-        <div class="flex flex-col md:flex-row items-center gap-4 mt-4">
+        <div class="flex flex-col md:flex-row items-center gap-24 mt-4">
             <div class="w-full p-5">
                 <div class="bg-gray-200 aspect-[3/2] relative">
-                    <img class="absolute top-12 left-12" src="/src/assets/placeholder.png" />
+                    <img class="absolute top-12 left-12" src="/src/assets/03.png" />
                 </div>
             </div>
             <div class="w-full p-5">
@@ -107,8 +107,19 @@
             </div>
         </div>
         <div class="text-center my-24">
-            <h1 class="font-light text-xl uppercase">Zvolený Tech Stack</h1>
-            <h2 class="font-medium text-xl">Vue.js, Bootstrap a express.js</h2>
+            <h1 class="font-light text-xl uppercase">Prozkoumejte aplikaci zblízka</h1>
+            <div class="flex flex-col gap-3 md:flex-row justify-center mt-4">
+                <a href="/login">
+                    <button class="bg-slate-100 text-gray-800 font-medium text-lg rounded-md hover:shadow-lg py-2 px-4">
+                        Otevřít aplikaci<i class="fa-sharp fa-solid fa-square-arrow-up-right ml-2"></i>
+                    </button>
+                </a>
+                <a href="https://github.com/danielkahoun">
+                    <button class="bg-gray-800 text-white font-medium text-lg rounded-md hover:shadow-lg py-2 px-4">
+                        Zobrazit zdrojový kód<i class="fa-brands fa-github ml-2"></i>
+                    </button>
+                </a>
+            </div>
         </div>
     </div>
 </template>

@@ -21,8 +21,8 @@ var con = mysql.createConnection({
     password: process.env.DB_PASS,
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
-    ssl: {
-        ca: fs.readFileSync(__dirname + '/ca-certificate.crt'),
+    ssl: process.env.DB_SSL_CA && {
+        ca: Buffer.from(process.env.DB_SSL_CA, "base64").toString("ascii"),
         rejectUnauthorized: false
     }
 });

@@ -1,6 +1,16 @@
 <script>
 export default {
-  props: ['user']
+  props: ['user'],
+  data() {
+    return {
+      abbr: this.user.first_name.substring(0, 1) + this.user.last_name.substring(0, 1)
+    }
+  },
+  computed: {
+    profilePicture() {
+      return 'https://ui-avatars.com/api/?name=' + this.abbr + '&background=random'
+    }
+  }
 }
 </script>
 
@@ -60,8 +70,8 @@ export default {
         </form>
 
         <div class="d-flex align-items-center" style="gap:10px;">
-          <!--<img class="rounded-circle" :src="'https://ui-avatars.com/api/?name='+user.first_name.substring(0, 1)+'+'+user.last_name.substring(0, 1)+'&background=random'" width="43" height="43">
-          --><div class="d-block text-start">
+          <img class="rounded-circle" :src="profilePicture" width="43" height="43">
+          <div class="d-block text-start">
             <p class="p-0 m-0">přihlášen jako</p>
             <h6 class="p-0 m-0">{{user.first_name}} {{user.last_name}}</h6>
           </div>

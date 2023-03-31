@@ -1,5 +1,5 @@
 <script>
-import NavigationBar from '../../components/NavigationBar.vue';
+import BaseView from './BaseView.vue';
 
 export default {
     props: ['user'],
@@ -101,17 +101,12 @@ export default {
         this.getUsers();
         this.getClasses();
     },
-    components: { NavigationBar }
+    components: { BaseView }
 }
 </script>
 
 <template>
-
-    <NavigationBar :user="user" />
-
-    <div class="container">
-        
-        
+    <base-view>
         <div class="d-flex">
             <h3>Správa uživatelů</h3>
             <button type="button" class="btn btn-primary btn-sm ms-auto" ref="btn" data-bs-toggle="modal" data-bs-target="#addUserModal">
@@ -120,10 +115,6 @@ export default {
         </div>
         <hr>
 
-        <!-- Button trigger modal -->
-        
-
-        <!-- Modal -->
         <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -214,12 +205,7 @@ export default {
                 </tr>
             </tbody>
         </table>
-
-
-
-
-    </div>
-
+    </base-view>
 </template>
 
 <style>

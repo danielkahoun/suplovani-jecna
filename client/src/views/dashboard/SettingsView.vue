@@ -1,7 +1,5 @@
 <script>
-import NavigationBar from '../../components/NavigationBar.vue';
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
+import BaseView from './BaseView.vue';
 
 export default {
     props: ['user'],
@@ -10,14 +8,12 @@ export default {
             calendar_url: window.location.origin + '/ics/' + this.user.calendar_key
         }
     },
-    components: { NavigationBar, VueDatePicker }
+    components: { BaseView }
 }
 </script>
 
 <template>
-    <NavigationBar :user="user" />
-
-    <div class="container">    
+    <base-view>
         <h3 class="mt-4">Nastavení</h3>
         <hr>
         <h5>Integrace s kalendářem</h5>
@@ -25,5 +21,5 @@ export default {
         <div class="input-group mt-2">
             <span class="input-group-text">{{ calendar_url }}</span>
         </div>
-    </div>
+    </base-view>
 </template>

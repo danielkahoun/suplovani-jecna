@@ -324,11 +324,13 @@ app.get('/api/getUsers', isAdmin, (req, res, next) => {
     });
 });
 
-app.post('/api/addSubstitution', isAdmin, (req, res, next) => {
-    req.body.forEach((key) => {
-        if(key == "") key = null;
-    });
-    
+app.post('/api/addSubstitution', isAdmin, (req, res, next) => { 
+    req.body.new_subject_id = (!req.body.new_subject_id) ? null : req.body.new_subject_id;
+    req.body.new_teacher_id = (!req.body.new_teacher_id) ? null : req.body.new_teacher_id;
+    req.body.new_room = (!req.body.new_room) ? null : req.body.new_room;
+    req.body.custom_title = (!req.body.custom_title) ? null : req.body.custom_title;
+    req.body.information = (!req.body.information) ? null : req.body.information;
+
     con.query("INSERT INTO substitutions(lesson_id, type, date, new_subject_id, new_teacher_id, new_room, custom_title, information) VALUES ("+mysql.escape(req.body.id)+","+mysql.escape(req.body.type)+","+mysql.escape(req.body.date)+","+mysql.escape(req.body.new_subject_id)+","+mysql.escape(req.body.new_teacher_id)+","+mysql.escape(req.body.new_room)+","+mysql.escape(req.body.custom_title)+","+mysql.escape(req.body.information)+")", function (err, result) {
         if(err) return res.status(500).end();
 
@@ -338,10 +340,12 @@ app.post('/api/addSubstitution', isAdmin, (req, res, next) => {
 });
 
 app.post('/api/editSubstitution', isAdmin, (req, res, next) => {
-    req.body.forEach((key) => {
-        if(key == "") key = null;
-    });
-
+    req.body.new_subject_id = (!req.body.new_subject_id) ? null : req.body.new_subject_id;
+    req.body.new_teacher_id = (!req.body.new_teacher_id) ? null : req.body.new_teacher_id;
+    req.body.new_room = (!req.body.new_room) ? null : req.body.new_room;
+    req.body.custom_title = (!req.body.custom_title) ? null : req.body.custom_title;
+    req.body.information = (!req.body.information) ? null : req.body.information;
+    
     con.query("UPDATE substitutions SET type = "+mysql.escape(req.body.type)+", new_subject_id = "+mysql.escape(req.body.new_subject_id)+", new_teacher_id = "+mysql.escape(req.body.new_teacher_id)+", new_room = "+mysql.escape(req.body.new_room)+", custom_title = "+mysql.escape(req.body.custom_title)+", information = "+mysql.escape(req.body.information)+" WHERE id = "+mysql.escape(req.body.substitution_id), function (err, result) {
         if(err) return res.status(500).end();
 

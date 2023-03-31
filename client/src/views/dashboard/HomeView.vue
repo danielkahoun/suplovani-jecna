@@ -317,18 +317,19 @@ export default {
             <tbody>
                 <tr v-for="(value, key) in schedule"
                     v-on:mouseover="position.y = (user.role == 2) ? key : parseInt(key); select.row = (user.role == 2) ? key : parseInt(key);">
-                    <td v-if="key == 1">pondělí<br><b><!--01.11.2022--></b></td>
-                    <td v-else-if="key == 2">úterý<br><b><!--01.11.2022--></b></td>
-                    <td v-else-if="key == 3">středa<br><b><!--01.11.2022--></b></td>
-                    <td v-else-if="key == 4">čtvrtek<br><b><!--01.11.2022--></b></td>
-                    <td v-else-if="key == 5">pátek<br><b><!--01.11.2022--></b></td>
+                    <td v-if="key == 1">pondělí<br></td>
+                    <td v-else-if="key == 2">úterý<br></td>
+                    <td v-else-if="key == 3">středa<br></td>
+                    <td v-else-if="key == 4">čtvrtek<br></td>
+                    <td v-else-if="key == 5">pátek<br></td>
                     <td v-else>{{ key }}</td>
                     <td class="p-0" v-for="i in 10" v-on:mouseover="position.x = i;"
                         :style="(position.x == i && position.y == key) && { backgroundColor: '#eeeeee', cursor: 'pointer' }"
-                        v-on:click="toggleModal">
+                        >
                         <template v-for="x in 10">
                             <div class="w-100 h-100" v-if="(value[x-1] != null && value[x-1].hour == i)"
                                 v-on:mouseover="(value[x-1] != null && value[x-1].hour == i) ? select.col = (x-1) : select.col = null;"
+                                v-on:click="toggleModal"
                                 :style="[(value[x-1].type == 'CANCELLED') && { backgroundColor: '#d9ead3' },
                                         (value[x-1].type == 'CHANGE') && { backgroundColor: '#f4cccc' },
                                         (value[x-1].type == 'CUSTOM') && { backgroundColor: '#d0e0e3' }]">

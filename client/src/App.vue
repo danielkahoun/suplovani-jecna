@@ -5,7 +5,12 @@ export default {
     data() {
         return {
             user: {}
-        };
+        }
+    },
+    provide() {
+        return {
+            getUser: () => this.user
+        }
     },
     methods: {
         getProfile() {
@@ -54,7 +59,6 @@ export default {
 
 * {
     font-family: 'Work Sans', sans-serif;
-
 }
 
 .router-link-active,

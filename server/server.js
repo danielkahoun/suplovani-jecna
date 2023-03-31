@@ -75,6 +75,28 @@ function getUserDetails(token, callback) {
     });
 }
 
+function groupByClass(data) {
+    return data.reduce((aggObj, child) => {
+        if(aggObj.hasOwnProperty(child.class)){
+            aggObj[child.class].push(child);
+        }else {
+            aggObj[child.class] = [child];
+        }
+        return aggObj
+    }, {})
+}
+
+function groupByDays(data) {
+    return data.reduce((aggObj, child) => {
+        if(aggObj.hasOwnProperty(child.day)){
+            aggObj[child.day].push(child);
+        }else {
+            aggObj[child.day] = [child];
+        }
+        return aggObj
+    }, {})
+}
+
 /** Web Routes (via Vue Router) */
 
 app.get(['/','/login','/prehled','/uzivatele','/nastaveni'], (req, res) => {
@@ -88,26 +110,17 @@ app.get('/ics/:token', (req, res) => {
     getUserDetails(req.params.token, function(err, data) {
         if(err) return res.status(500).end();
 
-        let query = "";
+        let query;
         if(data.role == 1) {
-            // teachers
             query = "SELECT * FROM schedule WHERE teacher_id = " + mysql.escape(data.id);
         }else {
-            // students
             query = "SELECT * FROM schedule WHERE class_id = " + mysql.escape(data.class_id);
         }
         
         con.query(query, function (err, result) {
             if (err) throw err;
     
-            const groupedData = result.reduce((aggObj, child) => {
-                if(aggObj.hasOwnProperty(child.day)){
-                    aggObj[child.day].push(child);
-                }else {
-                    aggObj[child.day] = [child];
-                }
-                return aggObj
-            }, {})
+            const groupedData = groupByDays(result);
     
             let events = [];
             for(let day in groupedData) {
@@ -237,37 +250,19 @@ app.get('/api/getSchedule', function(req, res) {
     getUserDetails(req.headers.authorization, function(err, data) {
         if(err) return res.status(500).end();
 
-        let query = "";
-        if(data.role == 2) {
-            // admin
-            query = "SELECT * FROM schedule WHERE day = " + mysql.escape(new Date().getDay());
-        }else if(data.role == 1) {
-            // teachers
+        let query;
+        if(data.role == 1) {
             query = "SELECT * FROM schedule WHERE teacher_id = " + mysql.escape(data.id);
-        }else {
-            // students
+        }else if(data.role == 0) {
             query = "SELECT * FROM schedule WHERE class_id = " + mysql.escape(data.class_id);
+        }else {
+            return res.status(403).end();
         }
 
         con.query(query, function (err, result) {
             if (err) throw err;
 
-            const groupedData = result.reduce((aggObj, child) => {
-                if(data.role == 2) {
-                    if(aggObj.hasOwnProperty(child.class)){
-                        aggObj[child.class].push(child);
-                    }else {
-                        aggObj[child.class] = [child];
-                    }
-                }else {
-                    if(aggObj.hasOwnProperty(child.day)){
-                        aggObj[child.day].push(child);
-                    }else {
-                        aggObj[child.day] = [child];
-                    }
-                }
-                return aggObj
-            }, {})
+            const groupedData = groupByDays(result);
 
             res.writeHead(200, { "Content-type": "application/json" });
             res.end(JSON.stringify(groupedData));
@@ -285,14 +280,7 @@ app.get('/api/getSchedule/:date', isAdmin, (req, res, next) => {
         con.query(query, function (err, result) {
             if (err) throw err;
 
-            const groupedData = result.reduce((aggObj, child) => {
-                if(aggObj.hasOwnProperty(child.class)){
-                    aggObj[child.class].push(child);
-                }else {
-                    aggObj[child.class] = [child];
-                }
-                return aggObj
-            }, {})
+            const groupedData = groupByClass(result);
 
             res.writeHead(200, { "Content-type": "application/json" });
             res.end(JSON.stringify(groupedData));

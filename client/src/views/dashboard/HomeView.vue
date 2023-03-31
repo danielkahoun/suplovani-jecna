@@ -96,7 +96,6 @@ export default {
                 body: JSON.stringify(this.select.data)
             })
             .then((response) => {
-                console.log(response.ok);
                 if (response.ok) {
                     this.toggleModal();
                     this.select.data = null;
@@ -115,7 +114,6 @@ export default {
                 body: JSON.stringify(this.select.data)
             })
             .then((response) => {
-                console.log(response.ok);
                 if (response.ok) {
                     this.toggleModal();
                     this.select.data = null;
@@ -213,12 +211,12 @@ export default {
                             <tbody>
                                 <tr>
                                     <th scope="row">Předmět</th>
-                                    <td v-if="select.data.new_subject_name == null">{{ select.data.subject_abbr }} - {{ select.data.subject_name }}</td>
+                                    <td v-if="!select.data.new_subject_name">{{ select.data.subject_abbr }} - {{ select.data.subject_name }}</td>
                                     <td v-else><s>{{ select.data.subject_abbr }} - {{ select.data.subject_name }}</s><br><b>{{ select.data.new_subject_abbr }} - {{ select.data.new_subject_name }}</b></td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Vyučující</th>
-                                    <td v-if="select.data.new_teacher_name == null">{{ select.data.teacher_name }}</td>
+                                    <td v-if="!select.data.new_teacher_name">{{ select.data.teacher_name }}</td>
                                     <td v-else><s>{{ select.data.teacher_name }}</s><br><b>{{ select.data.new_teacher_name }}</b></td>
                                 </tr>
                                 <tr>
@@ -227,19 +225,19 @@ export default {
                                 </tr>
                                 <tr>
                                     <th scope="row">Učebna</th>
-                                    <td v-if="select.data.new_room == null">{{ select.data.room }}</td>
+                                    <td v-if="!select.data.new_room">{{ select.data.room }}</td>
                                     <td v-else><s>{{ select.data.room }}</s><br><b>{{ select.data.new_room }}</b></td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Změny v rozvrhu</th>
                                     <td class="fw-bold" style="color:#93c47d;" v-if="select.data.type == 'CANCELLED'">odpadá</td>
                                     <td class="fw-bold" style="color:#e06666;" v-else-if="select.data.type == 'CHANGE'">změna</td>
-                                    <td class="fw-bold" style="color:#76a5af;" v-else-if="select.data.type == 'CUSTOM'">{{ (select.data.custom_title == null || select.data.custom_title == '') ? '<bez názvu>' : select.data.custom_title }}</td>
+                                    <td class="fw-bold" style="color:#76a5af;" v-else-if="select.data.type == 'CUSTOM'">{{ (!select.data.custom_title) ? '<bez názvu>' : select.data.custom_title }}</td>
                                     <td v-else>žádné</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Detailní informace</th>
-                                    <td>{{ (select.data.information == null || select.data.information == "") ? 'žádné' : select.data.information }}</td>
+                                    <td>{{ (!select.data.information) ? 'žádné' : select.data.information }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -251,7 +249,6 @@ export default {
                                     <div class="col">
                                         <label class="form-label">Typ změny</label>
                                         <select class="form-select" v-model="select.data.type">
-                                            <option>žádné změny</option>
                                             <option value="CANCELLED">zrušit hodinu (odpadá)</option>
                                             <option value="CHANGE">změna (učitele, učebny, předmětu)</option>
                                             <option value="CUSTOM">vlastní</option>
@@ -259,18 +256,18 @@ export default {
                                     </div>
                                     <div class="col">
                                         <template v-if="select.data.type == 'CHANGE'">
-                                            <label class="form-label">Změna učebny</label>
-                                            <input type="text" class="form-control mb-3" placeholder="Učebna" v-model="select.data.new_room">
-                                            <label class="form-label">Změna učitele</label>
-                                            <select class="form-select mb-3" v-model="select.data.new_teacher_id">
-                                                <option></option>
-                                                <option v-for="teacher in teachers" :value="teacher.id">{{ teacher.first_name+' '+teacher.last_name }}</option>
-                                            </select>
                                             <label class="form-label">Změna předmětu</label>
                                             <select class="form-select" v-model="select.data.new_subject_id">
-                                                <option></option>
+                                                <option value=""></option>
                                                 <option v-for="subject in subjects" :value="subject.id">{{ subject.name }}</option>
                                             </select>
+                                            <label class="form-label">Změna učitele</label>
+                                            <select class="form-select mb-3" v-model="select.data.new_teacher_id">
+                                                <option value=""></option>
+                                                <option v-for="teacher in teachers" :value="teacher.id">{{ teacher.first_name+' '+teacher.last_name }}</option>
+                                            </select>
+                                            <label class="form-label">Změna učebny</label>
+                                            <input type="text" class="form-control mb-3" placeholder="Učebna" v-model="select.data.new_room">
                                         </template>
                                         <template v-if="select.data.type == 'CUSTOM'">
                                             <label class="form-label">Název události</label>
@@ -372,4 +369,5 @@ export default {
             </tr>
         </tbody>
     </table>
-</div></template>
+</div>
+</template>

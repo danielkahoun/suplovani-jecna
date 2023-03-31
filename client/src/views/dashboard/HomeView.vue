@@ -231,7 +231,11 @@ export default {
                                 <tr>
                                     <th scope="row">Změny v rozvrhu</th>
                                     <td class="fw-bold" style="color:#93c47d;" v-if="select.data.type == 'CANCELLED'">odpadá</td>
-                                    <td class="fw-bold" style="color:#e06666;" v-else-if="select.data.type == 'CHANGE'">změna</td>
+                                    <td class="fw-bold" style="color:#e06666;" v-else-if="select.data.type == 'CHANGE' && (select.data.new_subject_id || select.data.new_teacher_id || select.data.new_room)">
+                                        <span class="comma" v-if="select.data.new_subject_id">předmět</span>
+                                        <span class="comma" v-if="select.data.new_teacher_id">vyučující</span>
+                                        <span class="comma" v-if="select.data.new_room">učebna</span>
+                                    </td>
                                     <td class="fw-bold" style="color:#76a5af;" v-else-if="select.data.type == 'CUSTOM'">{{ (!select.data.custom_title) ? '<bez názvu>' : select.data.custom_title }}</td>
                                     <td v-else>žádné</td>
                                 </tr>
@@ -371,3 +375,9 @@ export default {
     </table>
 </div>
 </template>
+
+<style>
+.comma:not(:empty) ~ .comma:not(:empty):before {
+    content: ", ";
+}
+</style>

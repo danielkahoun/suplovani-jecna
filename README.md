@@ -55,7 +55,7 @@ node .
 ve složce projektu vytvoříme soubor ```.env``` a v něm nastavíme následující parametry:
 
 ```
-HOSTNAME=localhost
+HOSTNAME=0.0.0.0
 DB_USER=<UZIVATEL>
 DB_NAME=<NAZEV_DATABAZE>
 DB_PASS=<HESLO>
@@ -63,4 +63,4 @@ DB_HOST=<ADRESA_DATABAZE>
 DB_PORT=<PORT_DATABAZE>
 ```
 
-```docker run --env-file .env jecna-suplovani env```
+```docker run -p 3000:3000 --env-file .env jecna-suplovani```

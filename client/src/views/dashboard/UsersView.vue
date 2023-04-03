@@ -19,7 +19,7 @@ export default {
     methods: {
         getUsers() {
             const self = this;
-            fetch(import.meta.env.VITE_URL+"api/getUsers", {
+            fetch(import.meta.env.VITE_URL+"api/users/get", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ export default {
         },
         getClasses() {
             const self = this;
-            fetch(import.meta.env.VITE_URL+"api/getClasses", {
+            fetch(import.meta.env.VITE_URL+"api/schedule/getClasses", {
                 method: 'GET',
             })
             .then(function (response) {
@@ -47,7 +47,7 @@ export default {
         },
         addUser() {
             const self = this;
-            fetch(import.meta.env.VITE_URL+"api/addUser", {
+            fetch(import.meta.env.VITE_URL+"api/users/create", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -56,7 +56,6 @@ export default {
                 body: JSON.stringify(this.form)
             })
             .then((response) => {
-                console.log(response.ok);
                 if (response.ok) {
                     this.toggleModal();
                     this.form = {
@@ -72,7 +71,7 @@ export default {
         },
         deleteUser(id) {
             const self = this;
-            fetch(import.meta.env.VITE_URL+"api/deleteUser/"+id, {
+            fetch(import.meta.env.VITE_URL+"api/users/delete/"+id, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -80,9 +79,7 @@ export default {
                 },
             })
             .then((response) => {
-                console.log(response.ok);
                 if (response.ok) {
-                    console.log("User deleted");
                     this.users = this.users.filter(user => user.id != id);
                 }
             });

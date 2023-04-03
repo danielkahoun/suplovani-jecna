@@ -20,7 +20,7 @@
                         Vyzkoušejte nyní<i class="fa-sharp fa-solid fa-square-arrow-up-right ml-2"></i>
                     </button>
                 </a>
-                <a href="https://github.com/danielkahoun">
+                <a href="https://github.com/danielkahoun/suplovani-jecna">
                     <button class="bg-gray-800 text-white font-medium text-lg rounded-md hover:shadow-lg py-2 px-4">
                         Dostupné na GitHubu<i class="fa-brands fa-github ml-2"></i>
                     </button>
@@ -114,7 +114,7 @@
                         Otevřít aplikaci<i class="fa-sharp fa-solid fa-square-arrow-up-right ml-2"></i>
                     </button>
                 </a>
-                <a href="https://github.com/danielkahoun">
+                <a href="https://github.com/danielkahoun/suplovani-jecna">
                     <button class="bg-gray-800 text-white font-medium text-lg rounded-md hover:shadow-lg py-2 px-4">
                         Zobrazit zdrojový kód<i class="fa-brands fa-github ml-2"></i>
                     </button>

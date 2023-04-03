@@ -15,7 +15,7 @@ export default {
     methods: {
         getProfile() {
             const self = this;
-            fetch(import.meta.env.VITE_URL+"api/getProfile", {
+            fetch(import.meta.env.VITE_URL+"api/users/me", {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',

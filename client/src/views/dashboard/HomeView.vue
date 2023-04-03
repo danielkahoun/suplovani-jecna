@@ -36,7 +36,7 @@ export default {
         },
         getSchedule() {
             const self = this;
-            let url = import.meta.env.VITE_URL+"api/getSchedule";
+            let url = import.meta.env.VITE_URL+"api/schedule/get";
             if(this.select.date != null) url += "/"+this.dateFormat;
 
             fetch(url, {
@@ -55,7 +55,7 @@ export default {
         },
         getTeachers() {
             const self = this;
-            fetch(import.meta.env.VITE_URL+"api/getTeachers", {
+            fetch(import.meta.env.VITE_URL+"api/schedule/getTeachers", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ export default {
         },
         getSubjects() {
             const self = this;
-            fetch(import.meta.env.VITE_URL+"api/getSubjects", {
+            fetch(import.meta.env.VITE_URL+"api/schedule/getSubjects", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -85,9 +85,9 @@ export default {
                     self.subjects = data;
                 });
         },
-        addSubstitution() {
+        createSubstitution() {
             const self = this;
-            fetch(import.meta.env.VITE_URL+"api/addSubstitution", {
+            fetch(import.meta.env.VITE_URL+"api/substitutions/create", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -103,9 +103,9 @@ export default {
                 }
             });
         },
-        editSubstitution() {
+        updateSubstitution() {
             const self = this;
-            fetch(import.meta.env.VITE_URL+"api/editSubstitution", {
+            fetch(import.meta.env.VITE_URL+"api/substitutions/update", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -121,9 +121,9 @@ export default {
                 }
             });
         },
-        removeSubstitution() {
+        deleteSubstitution() {
             const self = this;
-            fetch(import.meta.env.VITE_URL+"api/removeSubstitution", {
+            fetch(import.meta.env.VITE_URL+"api/substitutions/delete", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -281,9 +281,9 @@ export default {
                                     </div>
                                     <label class="form-label">Doplňující informace (volitelné)</label>
                                     <input type="text" class="form-control" placeholder="Bližší informace" v-model="select.data.information">
-                                    <button class="btn btn-primary mt-3" v-on:click="addSubstitution" v-if="select.data.substitution_id == null">Přidat změny</button>
-                                    <button class="btn btn-primary mt-3" v-on:click="editSubstitution" v-else>Uložit změny</button>
-                                    <button class="btn btn-link mt-3" v-on:click="removeSubstitution" v-if="select.data.substitution_id != null">Smazat</button>
+                                    <button class="btn btn-primary mt-3" v-on:click="createSubstitution" v-if="select.data.substitution_id == null">Přidat změny</button>
+                                    <button class="btn btn-primary mt-3" v-on:click="updateSubstitution" v-else>Uložit změny</button>
+                                    <button class="btn btn-link mt-3" v-on:click="deleteSubstitution" v-if="select.data.substitution_id != null">Smazat</button>
                                 </div>
                             </div>
                         </div>

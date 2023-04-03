@@ -31,7 +31,6 @@ export default {
                 })
                 .then((data) => {
                     this.$cookies.set("token", data, "7d")
-                    console.log("login success");
                     window.location.href = '/prehled';
                 })
                 .catch(function(error) {

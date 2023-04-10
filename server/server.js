@@ -18,11 +18,11 @@ app.get(['/','/login','/prehled','/uzivatele','/nastaveni'], (req, res) => {
 });
 
 /** API Routes */
-app.use('/ics', require('./routes/calendar'));
-app.use('/api/login', require('./routes/login'));
-app.use('/api/schedule', require('./routes/schedule'));
-app.use('/api/substitutions', require('./routes/substitutions'));
-app.use('/api/users', require('./routes/users'));
+app.use('/ics', require('./routes/calendar.js'));
+app.use('/api/login', require('./routes/login.js'));
+app.use('/api/schedule', require('./routes/schedule.js'));
+app.use('/api/substitutions', require('./routes/substitutions.js'));
+app.use('/api/users', require('./routes/users.js'));
 
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);

@@ -1,12 +1,9 @@
 FROM node:16
-WORKDIR /root/
 
-COPY client/ ./client/
+COPY . .
+
 RUN cd client && npm install && npm run build 
-
-COPY server/package*.json ./server/
 RUN cd server && npm install
-COPY server/server.js ./server/
 
 EXPOSE 3080
 

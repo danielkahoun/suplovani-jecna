@@ -22,7 +22,7 @@ Jednoduchý systém pro suplování na škole. Webová aplikace poskytuje přehl
 
 ### vložení databáze
 
-Do MySQL serveru je nutné naimportovat databázi z přiloženého souboru ```export.sql```
+Do MySQL serveru je nutné naimportovat databázi ze souboru ```export.sql``` ([zde ke stažení](https://spsejecnacz-my.sharepoint.com/:u:/g/personal/kahoun_spsejecna_cz/EcKaPJE4mOBGkqBGilXXz6QBdpghz0ncgoQWgJt0ohX9sw?e=y42zl3))
 
 ### spuštění aplikace ve vývojářské verzi (bez Dockeru)
 
